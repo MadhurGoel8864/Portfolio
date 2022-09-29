@@ -1,0 +1,32 @@
+*{
+    padding:0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+header{
+    background-color: rgba(0, 0, 0, 0.778);
+    height: 800px;
+}
+header nav{
+    padding: 2rem 0 ;
+}
+#branding{
+    margin-right: 10rem;
+}
+.container{
+    max-width: 1152px;
+    padding:  0 15px;
+    margin: 0 auto;
+}
+.flexes{
+    display: flex;
+}
+.centre_required{ 
+    align-items: center;
+}
+.linkings {
+    color: rgb(47, 255, 78);
+    text-decoration: none;
+    margin-right: 3rem;
+}
