@@ -6,7 +6,7 @@
 
 header{
     background-color: rgba(0, 0, 0, 0.778);
-    height: 800px;
+    height: 600px;
 }
 header nav{
     padding: 2rem 0 ;
@@ -29,4 +29,63 @@ header nav{
     color: rgb(47, 255, 78);
     text-decoration: none;
     margin-right: 3rem;
+}
+
+.lefty img{
+    width: 300px;
+    margin-right: 5 .6rem;
+}
+.right h2{
+    color: burlywood;
+    font-size: 2.5rem;
+    margin-bottom: 0.7rem;
+    line-height: 4rem;
+}
+.right p{
+    font-size: 1.4rem;
+    color: aqua;
+}
+.xyz{
+    justify-content: space-between;
+}
+#Heading_home {
+    display: flex;
+    justify-content: center;
+    color: aqua;
+    font-size: 3.1rem;
+}
+#Heading_about{
+    display: flex;
+    justify-content: center;
+    color: aqua;
+    font-size: 3.1rem;
+}
+#about_content{
+    margin: 40px;
+    font-size: 1.5rem;
+    color: chocolate;
+    justify-content: center;
+    align-items: center;
+}
+#skill_heading{
+    display: flex;
+    justify-content: center;
+    color: aqua;
+    font-size: 3.1rem;
+}
+#logos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    /* margin: 10%; */
+}
+.sizing{
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    border: 2px solid green;
+    margin: 3%;
+    width: 400px;
 }
