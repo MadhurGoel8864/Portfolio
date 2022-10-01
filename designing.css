@@ -37,7 +37,7 @@ header nav{
 }
 .left h2{
     color: greenyellow;
-    font-size: 45px;
+    font-size: 55px;
     font-family: 'Raleway', sans-serif;
     font-weight: 900;
 
@@ -306,9 +306,10 @@ nav .menu_btn{
     }
     nav{
         /* position: absolute; */
-        /* position:fixed ; */
+        position:fixed ;
         background-color: coral;
         display: inline-block;
+        width: 100%;
     }
     #clicks:checked ~ .menu_btn i:before{
         content: "\f00d";
