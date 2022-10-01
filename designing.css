@@ -156,6 +156,7 @@ header nav{
 .about_me{
     background-image: url(sec_back.jpg);
     margin: 0;
+    width: 100%;
 }
 #Heading_about{
     margin-top: 0px;
@@ -200,11 +201,13 @@ header nav{
     display: flex;
     flex-direction: row;
     height: 200px;
-    
     border: 2px solid green;
     border-radius: 20px;
     margin: 3%;
-    width: 400px;
+    width: 392px;
+}
+.img1{
+    width: 376px;
 }
 #nx{
     /* border: 5px solid yellow; */
@@ -226,8 +229,8 @@ header nav{
     /* background-color: rgba(0, 0, 0, 0.805); */
     background-image: url(contact_back.jpg);
     height: 350px;
-    margin-top: 0;
-    margin-bottom: 0;
+    width: 100%;
+    margin: 0 0 0 0;
 }
 .imgs{
     width:88px;
@@ -282,7 +285,8 @@ header nav{
 #skill_set{
     /* display: flex; */
     background-image: url(third_back.jpg);
-    margin-bottom: 0;
+    margin:0 0 0 0;
+    width: 100%;
     align-items: center;
     height: auto;
     width: auto;
