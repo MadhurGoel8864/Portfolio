@@ -177,7 +177,7 @@ function Navbar() {
 
                 <div onClick={handleDrawerClose}>
                     <div className='navLink--container'>
-                        <Fade left>
+                        {/* <Fade left>
                             <NavLink
                                 to='/'
                                 smooth={true}
@@ -193,7 +193,7 @@ function Navbar() {
                                     </span>
                                 </div>
                             </NavLink>
-                        </Fade>
+                        </Fade> */}
 
                         <Fade left>
                             <NavLink
@@ -242,6 +242,24 @@ function Navbar() {
                                     />
                                     <span className={classes.drawerLinks}>
                                         Skills
+                                    </span>
+                                </div>
+                            </NavLink>
+                        </Fade>
+
+                        <Fade left>
+                            <NavLink
+                                to='/#experience'
+                                smooth={true}
+                                spy='true'
+                                duration={2000}
+                            >
+                                <div className={classes.drawerItem}>
+                                    <FaFolderOpen
+                                        className={classes.drawerIcon}
+                                    />
+                                    <span className={classes.drawerLinks}>
+                                    Experience
                                     </span>
                                 </div>
                             </NavLink>
