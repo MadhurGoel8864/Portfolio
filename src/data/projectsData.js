@@ -5,8 +5,8 @@ export const projectsData = [
         projectName: 'Career Vault',
         projectDesc: 'Developed a job portal where companies can post job openings, and students can browse and apply for them.',
         tags: ['React.js', 'Mongo DB', 'Express','Node JS'],
-        code: 'https://github.com/hhhrrrttt222111/developer-portfolio',
-        demo: 'https://github.com/hhhrrrttt222111/developer-portfolio',
+        code: 'https://github.com/MadhurGoel8864/Career-Vault-Job-Portal',
+        demo: 'https://career-vault-job-portal.onrender.com/',
         image: 'https://webfeb.in/wp-content/uploads/2016/09/job-portal-1.jpg'
     },
     {
