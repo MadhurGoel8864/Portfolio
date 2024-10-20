@@ -2,7 +2,7 @@
 export const projectsData = [
     {
         id: 1,
-        projectName: 'Hire Horizon',
+        projectName: 'Career Vault',
         projectDesc: 'Developed a job portal where companies can post job openings, and students can browse and apply for them.',
         tags: ['React.js', 'Mongo DB', 'Express','Node JS'],
         code: 'https://github.com/hhhrrrttt222111/developer-portfolio',
