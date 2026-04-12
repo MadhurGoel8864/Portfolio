@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
-import { Download, ArrowRight, Github, Linkedin, Twitter, Mail } from 'lucide-react';
+import { Download, ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { PERSONAL, SOCIAL, STATS } from '../../constants/global';
 import { COLORS, withAlpha } from '../../constants/theme';
 import { useTypewriter } from '../../hooks/useTypewriter';
@@ -21,7 +21,6 @@ const child = {
 const SOCIAL_LINKS = [
   { icon: Github,   href: SOCIAL.github,             label: 'GitHub'   },
   { icon: Linkedin, href: SOCIAL.linkedin,            label: 'LinkedIn' },
-  { icon: Twitter,  href: SOCIAL.twitter,             label: 'Twitter'  },
   { icon: Mail,     href: `mailto:${PERSONAL.email}`, label: 'Email'    },
 ];
 

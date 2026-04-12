@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, Heart, ArrowUpRight } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-scroll';
 import { PERSONAL, SOCIAL, NAV_LINKS } from '../../constants/global';
 import { COLORS, withAlpha } from '../../constants/theme';
@@ -7,7 +7,6 @@ import { COLORS, withAlpha } from '../../constants/theme';
 const SOCIALS = [
   { icon: Github,   href: SOCIAL.github,              label: 'GitHub'   },
   { icon: Linkedin, href: SOCIAL.linkedin,             label: 'LinkedIn' },
-  { icon: Twitter,  href: SOCIAL.twitter,              label: 'Twitter'  },
   { icon: Mail,     href: `mailto:${PERSONAL.email}`,  label: 'Email'    },
 ];
 

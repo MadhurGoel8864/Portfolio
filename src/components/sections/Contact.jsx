@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Twitter, Send, MapPin, ArrowRight } from 'lucide-react';
+import { Mail, Github, Linkedin, Send, MapPin, ArrowRight } from 'lucide-react';
 import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
 import { PERSONAL, SOCIAL } from '../../constants/global';
@@ -7,9 +7,8 @@ import { COLORS, withAlpha } from '../../constants/theme';
 
 const LINKS = [
   { icon: Mail,     label: 'Email',    value: PERSONAL.email,              href: `mailto:${PERSONAL.email}`, color: COLORS.gold,          desc: 'Best way to reach me'    },
-  { icon: Github,   label: 'GitHub',   value: 'github.com/alexmorgan',     href: SOCIAL.github,              color: COLORS.socialGithub,  desc: 'Check out my projects'  },
-  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/alexmorgan', href: SOCIAL.linkedin,            color: COLORS.socialLinkedin, desc: 'Connect professionally'  },
-  { icon: Twitter,  label: 'Twitter',  value: '@alexmorgan',               href: SOCIAL.twitter,             color: COLORS.socialTwitter, desc: 'Dev thoughts & updates' },
+  { icon: Github,   label: 'GitHub',   value: 'github.com/MadhurGoel8864', href: SOCIAL.github,              color: COLORS.socialGithub,  desc: 'Check out my projects'  },
+  { icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/madhur-goel-mg', href: SOCIAL.linkedin,       color: COLORS.socialLinkedin, desc: 'Connect professionally'  },
 ];
 
 function FormField({ name, label, type = 'text', placeholder, required, as, rows }) {
