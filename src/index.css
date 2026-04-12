@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Black + Gold Premium Theme
+   :root = light mode  |  html.dark = dark mode (default)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Light mode ───────────────────────────────────────────── */
+:root {
+  --bg-base:         #F9F7F3;
+  --bg-surface:      #FFFFFF;
+  --bg-elevated:     #F5F3EE;
+  --bg-card:         #FFFFFF;
+  --bg-deeper:       #EDE9E0;
+
+  --bg-base-rgb:     249, 247, 243;
+  --bg-surface-rgb:  255, 255, 255;
+
+  --gold:            #A07830;
+  --gold-muted:      #8B6520;
+  --gold-dim:        #6B4F1A;
+  --gold-rgb:        160, 120, 48;
+
+  --text-primary:    #131313;
+  --text-secondary:  #4A4845;
+  --text-muted:      #888480;
+
+  --border:          #E5E2DA;
+  --border-subtle:   rgba(0,0,0,0.05);
+  --border-medium:   rgba(0,0,0,0.10);
+  --border-strong:   rgba(0,0,0,0.18);
+  --border-hover:    rgba(160,120,48,0.30);
+  --glass-bg:        rgba(255,255,255,0.80);
+
+  --nav-bg:          rgba(249,247,243,0.90);
+}
+
+/* ── Dark mode (default visual) ───────────────────────────── */
+html.dark {
+  --bg-base:         #131313;
+  --bg-surface:      #1A1A1A;
+  --bg-elevated:     #1F1F1F;
+  --bg-card:         #1F1F1F;
+  --bg-deeper:       #0D0D0D;
+
+  --bg-base-rgb:     19, 19, 19;
+  --bg-surface-rgb:  26, 26, 26;
+
+  --gold:            #EFD395;
+  --gold-muted:      #D4B97A;
+  --gold-dim:        #B8975A;
+  --gold-rgb:        239, 211, 149;
+
+  --text-primary:    #FFFFFF;
+  --text-secondary:  #A4A4A4;
+  --text-muted:      #777674;
+
+  --border:          #2A2A2A;
+  --border-subtle:   rgba(255,255,255,0.05);
+  --border-medium:   rgba(255,255,255,0.10);
+  --border-strong:   rgba(255,255,255,0.18);
+  --border-hover:    rgba(239,211,149,0.25);
+  --glass-bg:        rgba(26,26,26,0.85);
+
+  --nav-bg:          rgba(19,19,19,0.92);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.2s ease;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar       { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deeper); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 99px; }
+
+  /* Selection */
+  ::selection { background: rgba(var(--gold-rgb), 0.25); color: var(--text-primary); }
+
+  /* Focus */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--gold), 0 0 0 4px rgba(var(--gold-rgb), 0.15);
+    border-radius: 6px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── Gold text (replaces gradient-text) ─────────────────── */
+  .gold-text {
+    color: var(--gold);
+  }
+
+  /* ── Subtle gold gradient text (for name highlights) ─────── */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--gold), var(--gold-muted));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* ── Glass card ─────────────────────────────────────────── */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ── Card base ──────────────────────────────────────────── */
+  .dark-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .dark-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 0 1px var(--border-hover), 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  /* ── Button shine sweep ─────────────────────────────────── */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -75%;
+    width: 50%; height: 200%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+  }
+  .btn-shine:hover::after { left: 150%; }
+
+  /* ── Minimal grid texture ───────────────────────────────── */
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* ── Section divider ────────────────────────────────────── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  /* ── Gold divider ───────────────────────────────────────── */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb),0.4), transparent);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .will-change-transform { will-change: transform; }
+  .glow-gold { box-shadow: 0 0 30px rgba(var(--gold-rgb), 0.20); }
+}
