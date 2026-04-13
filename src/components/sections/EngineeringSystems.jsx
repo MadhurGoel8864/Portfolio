@@ -12,11 +12,18 @@ import { ChevronDown, Radio, Database } from 'lucide-react';
 // ─────────────────────────────────────────────
 function SubsystemCard({ sys, isOpen, onToggle }) {
   return (
-    <div
+    <motion.div
+      whileHover={{ 
+        y: isOpen ? 0 : -3,
+        backgroundColor: isOpen ? withAlpha(COLORS.gold, 0.05) : withAlpha(COLORS.gold, 0.015),
+        borderColor: isOpen ? withAlpha(COLORS.gold, 0.40) : withAlpha(COLORS.gold, 0.15)
+      }}
       className="rounded-2xl overflow-hidden transition-all duration-300"
       style={{
-        background: isOpen ? withAlpha(COLORS.gold, 0.03) : 'var(--bg-surface)',
-        border: `1px solid ${isOpen ? withAlpha(COLORS.gold, 0.30) : 'var(--border-subtle)'}`,
+        backgroundColor: isOpen ? withAlpha(COLORS.gold, 0.03) : 'var(--bg-surface)',
+        borderColor: isOpen ? withAlpha(COLORS.gold, 0.30) : 'var(--border-subtle)',
+        borderWidth: '1px',
+        borderStyle: 'solid',
         boxShadow: isOpen ? `0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px ${withAlpha(COLORS.gold, 0.12)}` : 'none',
       }}
     >
@@ -105,7 +112,7 @@ function SubsystemCard({ sys, isOpen, onToggle }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
 
@@ -237,13 +244,6 @@ export function EngineeringSystems() {
         ))}
       </motion.div>
 
-      <motion.div variants={itemVariants}>
-        <RealtimeBlock />
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <CachingBlock />
-      </motion.div>
     </SectionWrapper>
   );
 }

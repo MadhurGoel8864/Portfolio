@@ -8,7 +8,7 @@ import { PERSONAL, EDUCATION, EXPERIENCE, SOCIAL } from '../../constants/global'
 import { COLORS, withAlpha } from '../../constants/theme';
 
 const TYPE_COLORS = {
-  'Full-time':  { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
+  'Full-time': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
   'Internship': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
 };
 
@@ -114,7 +114,7 @@ export function About() {
         subtitle={null}
       />
 
-      <div className="max-w-4xl mb-12">
+      <div className="max-w-6xl mb-12">
         <motion.p variants={itemVariants} className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
           {PERSONAL.bio}
         </motion.p>

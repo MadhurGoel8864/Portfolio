@@ -14,7 +14,7 @@ export const PERSONAL = {
     "System Architect",
   ],
   tagline: "I design the infrastructure that makes products work — auth systems, real-time sync, and execution pipelines.",
-  bio: `Backend engineer focused on real-time system design, API architecture, and distributed state management. I care about how systems behave under concurrency, how components fail, and what breaks first.`,
+  bio: `Backend engineer focused on real-time system design, API architecture, and distributed state management. I care about how systems behave under concurrency, how components fail, and what breaks first. I design for resilience, observability, and predictable performance at scale.`,
   email: "madhur12a16072@gmail.com",
   phone: "+91 7078564490",
   location: "Gurgaon, Haryana, India",
@@ -25,7 +25,7 @@ export const PERSONAL = {
 
 export const SOCIAL = {
   github: "https://github.com/MadhurGoel8864",
-  linkedin: "https://www.linkedin.com/in/madhur-goel-mg",
+  linkedin: "https://leetcode.com/u/madhurgoel88/",
   liveProject: "https://devduel.site",
   apiDocs: "https://devduel.site/api/docs",
   resumeLink: "/resume.pdf",
@@ -89,7 +89,7 @@ export const DEVDUAL = {
   url: "https://devduel.site",
   apiDocs: "https://devduel.site/api/docs",
   github: "https://github.com/MadhurGoel8864",
-  duration: "3–4 months (part-time)",
+  duration: "3-4 months (part-time)",
   status: "Live on GCP",
 
   problemStatement:
@@ -546,13 +546,13 @@ export const ACHIEVEMENTS = [
     color: "#F0A30A",
   },
   {
-    id: "codeforces",
-    emoji: "🔵",
-    category: "Competitive Programming",
-    title: "Codeforces Specialist",
-    description: "Achieved Specialist rank on Codeforces. Consistent participation in Div. 2 and Div. 3 rounds with rating 1400+.",
+    id: "bidbuzz-winner",
+    emoji: "🏆",
+    category: "Contest Winner",
+    title: "Winner of BidBuzz",
+    description: "My team won the BidBuzz contest hosted in our college. I really liked the idea, which became the inspiration for creating DevDual.",
     year: "2024",
-    link: "https://codeforces.com/profile/MadhurGoel",
+    link: null,
     color: "#1DA1F2",
   },
   {
@@ -573,7 +573,7 @@ export const ACHIEVEMENTS = [
     description: "Certified in AWS Cloud fundamentals — compute, storage, networking, IAM, and core service architecture.",
     year: "2023",
     link: null,
-    color: "#FF9900",
+    color: "#818cf8",
   },
   {
     id: "devdual-launch",
@@ -602,8 +602,8 @@ export const NAV_LINKS = [
   { label: "Home", href: "hero" },
   { label: "About", href: "about" },
   { label: "DevDual", href: "system-overview" },
+  { label: "Capabilities", href: "what-i-build" },
   { label: "Architecture", href: "architecture" },
   { label: "Engineering", href: "engineering-systems" },
-  { label: "API", href: "api-design" },
-  { label: "Contact", href: "contact" },
+  { label: "Achievements", href: "achievements" },
 ];

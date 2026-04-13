@@ -90,7 +90,7 @@ function AchievementCard({ ach, index }) {
 
 export function Achievements() {
   return (
-    <SectionWrapper id="achievements" alt>
+    <SectionWrapper id="achievements">
       <SectionTitle
         label="Recognition"
         title="Achievements"

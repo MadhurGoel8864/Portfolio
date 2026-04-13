@@ -10,7 +10,7 @@ const ICONS = [Zap, Layers, Database, Shield, GitBranch, Terminal, Activity, Wor
 
 export function WhatIBuild() {
   return (
-    <SectionWrapper id="what-i-build">
+    <SectionWrapper id="what-i-build" alt>
       <SectionTitle
         label="Capabilities"
         title="What I Build"

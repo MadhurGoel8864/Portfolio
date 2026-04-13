@@ -5,11 +5,11 @@ import { PERSONAL, SOCIAL } from '../../constants/global';
 import { COLORS, withAlpha } from '../../constants/theme';
 
 const LINKS = [
-  { icon: ExternalLink, label: "Live System",  href: SOCIAL.liveProject, desc: "DevDual — running on GCP",     primary: true },
-  { icon: FileText,     label: "API Docs",     href: SOCIAL.apiDocs,     desc: "OpenAPI / Swagger docs"        },
-  { icon: Github,       label: "GitHub",       href: SOCIAL.github,      desc: "Source code + history"        },
-  { icon: Linkedin,     label: "LinkedIn",     href: SOCIAL.linkedin,    desc: "Professional profile"         },
-  { icon: Mail,         label: "Email",        href: `mailto:${PERSONAL.email}`, desc: PERSONAL.email        },
+  { icon: ExternalLink, label: "Live System", href: SOCIAL.liveProject, desc: "DevDual — running on GCP", primary: true },
+  { icon: FileText, label: "API Docs", href: SOCIAL.apiDocs, desc: "OpenAPI / Swagger docs" },
+  { icon: Github, label: "GitHub", href: SOCIAL.github, desc: "Source code + history" },
+  { icon: Linkedin, label: "LinkedIn", href: SOCIAL.linkedin, desc: "Professional profile" },
+  { icon: Mail, label: "Email", href: `mailto:${PERSONAL.email}`, desc: PERSONAL.email },
 ];
 
 export function Contact() {

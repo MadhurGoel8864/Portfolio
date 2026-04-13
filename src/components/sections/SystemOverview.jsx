@@ -8,7 +8,7 @@ import { COLORS, withAlpha } from '../../constants/theme';
 
 export function SystemOverview() {
   return (
-    <SectionWrapper id="system-overview" alt>
+    <SectionWrapper id="system-overview">
       <SectionTitle
         label="DevDual"
         title="System Overview"
