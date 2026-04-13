@@ -25,7 +25,8 @@ export const PERSONAL = {
 
 export const SOCIAL = {
   github: "https://github.com/MadhurGoel8864",
-  linkedin: "https://leetcode.com/u/madhurgoel88/",
+  linkedin: "https://www.linkedin.com/in/madhur-goel-mg",
+  leetcode: "https://leetcode.com/madhurgoel88/",
   liveProject: "https://devduel.site",
   apiDocs: "https://devduel.site/api/docs",
   resumeLink: "/resume.pdf",
@@ -77,7 +78,7 @@ export const CAPABILITIES = [
   },
   {
     title: "Contest lifecycle state machines",
-    detail: "Validated state transitions (DRAFT → PUBLISHED → ONGOING → COMPLETED). Invariants enforced at the service layer, not the DB.",
+    detail: "Validated state transitions (DRAFT → REGISTRATION_OPEN → ACTIVE → ENDED). Invariants enforced at the service layer, not the DB. Leaderboard ties broken by remaining purse credits.",
     tags: ["State Machines", "Lifecycle", "Validation"],
   },
 ];
@@ -193,10 +194,10 @@ export const ARCHITECTURE = [
     tech: "Judge0 on GCP VM",
     description: "Self-hosted Judge0 handles sandboxed code execution. Submissions sent via HTTP, verdicts polled asynchronously in a background task.",
     points: [
-      "Multi-language support via Judge0 language IDs",
+      "Supports Python, JavaScript, TypeScript, C++, C, Java, Go, Rust via Judge0 language IDs",
       "Background task polls every 1s until verdict is final",
       "Verdict + stdout/stderr stored in DB per submission",
-      "Score = (passed_tests / total_tests) × problem_max_score",
+      "Score = problem points on ACCEPTED verdict; 0 otherwise (no partial credit)",
     ],
   },
 ];
@@ -226,36 +227,37 @@ export const ENGINEERING_SYSTEMS = [
     id: "auction",
     label: "B",
     name: "Real-Time Auction Engine",
-    what: "Live bidding where teams compete for problems using credits. Bids broadcast in real-time to all connected clients via WebSocket.",
+    what: "Live bidding where teams compete for problems using credits. Auctions flow through PENDING → ACTIVE → FINISHED states; bids broadcast in real-time to all connected clients via WebSocket. Credits deduct only from the winning team, and only when the auction closes.",
     challenges: [
-      "Two clients bidding simultaneously read the same credit balance before either write commits — both succeed, balance goes negative",
+      "Simultaneous bids from different teams near auction close — only one can legitimately hold 'current highest' at timer expiry",
+      "Bids must be validated against the team's purse at submit time, but deduction must wait until the team actually wins",
       "Reconnecting clients must receive current state — not re-enter mid-stream and miss events",
-      "Auction completion must be atomic: problem assigned, credits deducted, next problem queued in one transaction",
+      "Auction completion must be atomic: winner locked, credits deducted, problem assigned (status ASSIGNED), next auction queued",
     ],
     implementation: [
-      "Bid handler: validate amount → SELECT FOR UPDATE on team credit row → deduct → commit → broadcast",
-      "Current state (winning_bid, winner_id, problem_id) stored in Redis Hash for fast reads",
+      "Bid handler: validate bid ≥ current_highest + 10 AND bid ≤ team_purse → SELECT FOR UPDATE on the auction state row → record bid → commit → broadcast",
+      "Current state (current_highest_bid, leading_team_id, problem_id, time_remaining) stored in Redis Hash for fast WS reads",
       "On reconnect: server sends Redis snapshot of current state before adding client to live stream",
-      "Auction end: mark problem won, deduct credits in DB, LPOP next problem from Redis queue",
+      "Auction close: lock auction row, debit winning team's purse by winning bid, set ProblemAssignment status=ASSIGNED, LPOP next problem from Redis queue",
     ],
-    decision: "PostgreSQL row-level locking over application-level mutex — DB is the source of truth for credits. Optimistic locking + retry was considered but adds complexity to the client.",
+    decision: "Row-level lock on the auction row (not the team credit row) — the actual contention point is 'who is currently highest', not the purse. Deferring deduction until close matches the product rule (no refunds, but also no deduction on losing bids) and avoids needless lock contention on the purse during a live auction.",
   },
   {
     id: "execution",
     label: "C",
     name: "Code Execution Pipeline",
-    what: "Submission from Coder → sandboxed Judge0 execution → verdict polling → scoring update.",
+    what: "Submission from Coder → sandboxed Judge0 execution → verdict polling → scoring update. Problem assignments flow ASSIGNED → SOLVED (on first ACCEPTED verdict) or ASSIGNED → FAILED (contest ends without one, credits already spent).",
     challenges: [
       "Judge0 execution is async — submission returns a token, not an immediate verdict",
-      "Partial scoring requires tracking per-test-case results, not just pass/fail",
+      "Multiple submissions per problem are allowed until ACCEPTED or contest ends; only ACCEPTED awards points",
       "Self-hosted Judge0 on a shared GCP VM introduces latency variability",
     ],
     implementation: [
       "Submission stored in DB with PENDING status on receipt",
       "Background task polls Judge0 every 1s until status exits 'In Queue' or 'Processing'",
       "Verdict + stdout/stderr stored per submission in DB",
-      "Score = (passed_test_cases / total_test_cases) × problem_max_score",
-      "Leaderboard recalculated on each finalized submission",
+      "Scoring is binary: ACCEPTED flips the assignment to SOLVED and awards the problem's full point value; any other verdict awards 0",
+      "Leaderboard recalculated on each finalized submission; ranked by points, ties broken by remaining purse credits",
     ],
     decision: "Polling over Judge0 webhooks — self-hosted infra has no stable public callback URL. Acceptable at current scale. Webhook + queue would replace this at higher traffic.",
   },
@@ -263,16 +265,16 @@ export const ENGINEERING_SYSTEMS = [
     id: "teams",
     label: "D",
     name: "Team & Role Management",
-    what: "Team formation with role-based constraints. One Bidder, one Coder per team. Roles are contest-scoped, not global.",
+    what: "2-person teams with strict role constraints — exactly one BIDDING and one CODING per team. Roles are team-scoped, not global: a user can hold BIDDING in one team and CODING in another. Team creator is auto-assigned BIDDING (captain). Roles can be swapped before a contest starts but lock once it goes ACTIVE.",
     challenges: [
-      "Same user can be Bidder in Team A and Coder in Team B — roles are per-team, not global properties of the user",
+      "Same user may hold different roles across different teams — roles live on TeamMember, not on User",
       "Team composition must lock after contest start — no mid-contest role changes",
       "Invite system must expire without a background cleanup job",
     ],
     implementation: [
-      "TeamMember(team_id, user_id, role) with UNIQUE constraint on (team_id, user_id)",
+      "TeamMember(team_id, user_id, role) with UNIQUE constraint on (team_id, user_id); max 2 rows per team",
       "Invite codes stored in Redis with 24-hr TTL; accepted invite creates TeamMember row",
-      "Contest ONGOING transition validates team has both roles filled",
+      "Contest ACTIVE transition validates every registered team has both BIDDING and CODING roles filled",
       "Role checked per-action in service layer — not globally in middleware",
     ],
     decision: "Role enforcement in the service layer because roles are resource-scoped. Global middleware cannot resolve context-specific role without additional DB lookups per request.",
@@ -283,15 +285,17 @@ export const ENGINEERING_SYSTEMS = [
     name: "Contest Lifecycle System",
     what: "End-to-end contest management — creation, problem linking, team registration, state transitions, leaderboard computation.",
     challenges: [
-      "State transitions must be validated — DRAFT cannot jump to COMPLETED",
-      "Leaderboard must remain consistent under concurrent submissions",
+      "State transitions must be validated — DRAFT cannot jump to ENDED",
+      "Leaderboard must remain consistent under concurrent submissions and match the tiebreaker rule",
       "Organizers of one contest can participate as users in another — permissions are resource-scoped",
     ],
     implementation: [
-      "Status enum: DRAFT → PUBLISHED → ONGOING → COMPLETED",
+      "Status enum: DRAFT → REGISTRATION_OPEN → ACTIVE → ENDED",
       "Each transition validated in service layer — invalid transitions return 400",
-      "Problems linked via ContestProblem join table with explicit ordering",
-      "Leaderboard: query submissions grouped by team, summed by score, ordered descending",
+      "On ACTIVE: every registered team seeded with a 1000-credit purse",
+      "Problems linked via ContestProblem join table with per-contest overrides for points, base price, and display order",
+      "Leaderboard: sum points from ACCEPTED submissions per team, ordered by points desc, ties broken by remaining purse credits",
+      "On ENDED: any assignment still ASSIGNED flips to FAILED — credits already spent, no points awarded",
       "Organizer permissions scoped to contest ownership FK — checked per-resource",
     ],
     decision: "State machine in the service layer rather than DB triggers — transitions are auditable, testable, and don't create invisible DB-level side effects.",
@@ -360,7 +364,7 @@ export const CACHING = {
     },
     {
       key: "Auction Current State",
-      structure: "Hash — key: auction:{id}:state",
+      structure: "Hash — key: auction:{id}:state, fields: problem_id, current_highest_bid, leading_team_id, time_remaining",
       ttl: "Auction duration",
       why: "Fast reads for WebSocket broadcast and reconnect sync. DB query per broadcast would spike under active auction load.",
     },
@@ -377,27 +381,27 @@ export const CACHING = {
 export const CHALLENGES = [
   {
     id: "ws-sync",
-    title: "WebSocket state sync under concurrent bids",
+    title: "Consistent 'current highest bid' under concurrent bidders",
     problem:
-      "Two clients submit bids within milliseconds. Both read the same credit balance before either write commits. Both pass the credit check. Both succeed — team ends with a negative balance.",
+      "Near auction close, Bidders from different teams submit bids within milliseconds. Each reads the current highest bid, validates their bid beats it by 10, and writes. Without serialization, two bids could both be accepted as 'highest' — the timer then sees an inconsistent winner, and the broadcast order contradicts the DB truth.",
     solution:
-      "SELECT FOR UPDATE on the team credit row inside the bid transaction. Holds a row-level lock until commit, serializing concurrent writes to the same team's balance.",
+      "SELECT FOR UPDATE on the auction state row inside the bid transaction. Holds a row-level lock until commit, so each bid re-reads the current highest under the lock, validates the +10 increment, and commits before the next bid can enter. Credit deduction is deferred to auction close — the lock protects ordering, not purse balance.",
     tradeoff:
-      "Lock contention adds latency if many bids arrive simultaneously for the same team. Acceptable under current design — Bidder role is singular per team, so maximum one concurrent bidder per credit row.",
+      "Lock contention adds latency when bids cluster in the final seconds of an auction. Acceptable at current scale — one auction at a time, bounded by the number of registered teams (single-digit Bidders per auction in practice).",
     improvement:
-      "Optimistic locking with a version column + retry on conflict. Reduces lock duration. Worth implementing if bid throughput increases.",
+      "Optimistic locking with a bid_sequence version column + retry on conflict. Shortens lock duration and lets the server reject stale bids with a clear client-side error. Worth implementing if concurrent-bidder count grows.",
   },
   {
     id: "db-schema",
-    title: "DB schema for cross-contest role constraints",
+    title: "DB schema for per-team role constraints",
     problem:
-      "A user can be Bidder in one team and Coder in another. Roles are not global. Schema must support this without duplication or ambiguity.",
+      "A user can hold BIDDING in one team and CODING in another. Roles are team-scoped, not global. Schema must support this without duplication and without letting a team end up with two BIDDINGs or two CODINGs.",
     solution:
-      "TeamMember(team_id, user_id, role) with UNIQUE(team_id, user_id). Roles are contest-scoped via team's contest FK. Role lookup: user → TeamMember → Team → Contest.",
+      "TeamMember(team_id, user_id, role) with UNIQUE(team_id, user_id). Roles live on the membership row, not the User. Role lookup: user → TeamMember(team_id) → role. Each team is expected to have exactly one BIDDING and one CODING row.",
     tradeoff:
-      "Every role check requires a join chain. More queries, but correctly normalized. Denormalizing role onto the User model would break multi-contest semantics entirely.",
+      "Every role check requires a membership lookup. More queries, but correctly normalized. Denormalizing role onto the User model would break multi-team semantics entirely.",
     improvement:
-      "DB-level enforcement via partial indexes — e.g. UNIQUE on (team_id, role) WHERE role='BIDDER' — to enforce one Bidder per team at the schema level, not just service code.",
+      "DB-level enforcement via partial unique indexes — UNIQUE on (team_id, role) WHERE role='BIDDING' and a matching one for 'CODING' — to enforce one of each per team at the schema level, not just service code.",
   },
   {
     id: "rbac",
@@ -554,7 +558,7 @@ export const ACHIEVEMENTS = [
     title: "LeetCode Knight",
     description: "Reached Knight badge with a contest rating of 1880+. Solved 915+ problems across data structures, algorithms, and system design categories.",
     year: "2024",
-    link: "https://leetcode.com/MadhurGoel_",
+    link: "https://leetcode.com/madhurgoel88/",
     color: "#F0A30A",
   },
   {
