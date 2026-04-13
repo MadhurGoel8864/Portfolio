@@ -223,7 +223,7 @@ function CachingBlock() {
 //  Main export
 // ─────────────────────────────────────────────
 export function EngineeringSystems() {
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
 
   return (
     <SectionWrapper id="engineering-systems" alt>

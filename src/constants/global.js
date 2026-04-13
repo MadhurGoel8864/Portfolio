@@ -92,11 +92,22 @@ export const DEVDUAL = {
   duration: "3-4 months (part-time)",
   status: "Live on GCP",
 
-  problemStatement:
-    "Standard competitive programming platforms are individual and passive. DevDual introduces team dynamics and resource constraints — forcing teams to make economic decisions before solving technical ones.",
+  problemStatement: [
+    "Traditional contests test pure algorithms in isolation, lacking strategic depth.",
+    "DevDual introduces <strong>resource constraints</strong> bringing an economic twist.",
+    "Transforms coding into a high-stakes game where <strong>risk vs reward</strong> matters."
+  ],
 
-  coreMechanic:
-    "Each 2-person team has a Bidder and a Coder. Bidder participates in a live auction using a fixed 1000-credit budget to acquire problems. Coder solves only problems their team wins. The split forces collaboration and strategic prioritization.",
+  coreMechanic: [
+    "<strong>2-person teams</strong> split into a <strong>Bidder vs Coder</strong>.",
+    "Bidder competes in a <strong>real-time auction</strong> with a fixed virtual purse.",
+    "Wins deplete currency instantly; points rely solely on Coder's success."
+  ],
+
+  theStrategy: [
+    "Unused currency holds no value—teams must spend strategically.",
+    "Coordination between the Bidder's budget and Coder's skill is the key to winning."
+  ],
 
   nonTrivialAspects: [
     "Coordinating real-time bidding state across concurrent clients with no message broker",
@@ -109,11 +120,12 @@ export const DEVDUAL = {
   techStack: ["FastAPI", "PostgreSQL", "SQLAlchemy", "Redis", "WebSockets", "Judge0", "GCP"],
 
   stats: [
-    { label: "Backend", value: "FastAPI + PostgreSQL" },
-    { label: "Real-time", value: "Native WebSockets" },
-    { label: "Execution", value: "Self-hosted Judge0" },
-    { label: "Infra", value: "GCP VM" },
-    { label: "Dev time", value: "3–4 months" },
+    { label: "Backend", value: "FastAPI + PostgreSQL", icon: "database" },
+    { label: "Real-time", value: "Native WebSockets", highlight: true, icon: "zap" },
+    { label: "Execution", value: "Self-hosted Judge0", highlight: true, icon: "code" },
+    { label: "Infra", value: "GCP VM", icon: "server" },
+    { label: "Performance", value: "< 50ms p99 auction latency", icon: "activity" },
+    { label: "Dev time", value: "3–4 months", icon: "clock" },
   ],
 };
 
@@ -469,7 +481,7 @@ export const EDUCATION = [
     highlights: ["AI & ML Specialization", "Backend Development", "Competitive Programming"],
   },
   {
-    school: "St. Mary's Senior Secondary School",
+    school: "Delhi Public School",
     affiliation: "C.B.S.E",
     degree: "Senior Secondary (Class XII)",
     duration: "2019 – 2021",
