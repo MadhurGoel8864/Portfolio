@@ -1,133 +1,169 @@
 import { motion } from 'framer-motion';
-import { Mail, MapPin, GraduationCap, Download, ExternalLink } from 'lucide-react';
+import { GraduationCap, Briefcase, MapPin, Download, CheckCircle } from 'lucide-react';
 import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
 import { GlowCard } from '../ui/GlowCard';
-import { Button } from '../ui/Button';
-import { PERSONAL, EDUCATION, SOCIAL, STATS } from '../../constants/global';
+import { Badge } from '../ui/Badge';
+import { PERSONAL, EDUCATION, EXPERIENCE, SOCIAL } from '../../constants/global';
 import { COLORS, withAlpha } from '../../constants/theme';
 
-const TIMELINE = [
-  { year: "2019", event: "Started CS degree at State University" },
-  { year: "2022", event: "First internship — ML Research Lab" },
-  { year: "2022", event: "Built first production SaaS app" },
-  { year: "2023", event: "Graduated with 3.9 GPA" },
-  { year: "2023", event: "Joined TechCorp as SWE II" },
-  { year: "2024", event: "500+ GitHub stars, LeetCode Knight" },
-];
+const TYPE_COLORS = {
+  'Full-time':  { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
+  'Internship': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
+};
+
+function ExperienceCard({ exp, index }) {
+  const tc = TYPE_COLORS[exp.type] || TYPE_COLORS['Internship'];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05, duration: 0.28 }}
+    >
+      <GlowCard className="p-5 h-full" glowColor={COLORS.indigoRgb}>
+        {/* Top line */}
+        <div className="absolute top-0 left-0 right-0 h-[1px]"
+          style={{ background: `linear-gradient(90deg, transparent, ${withAlpha(COLORS.indigo, 0.55)}, transparent)` }} />
+
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full"
+                style={{ background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>
+                {exp.type}
+              </span>
+              {exp.current && (
+                <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: COLORS.indigo }}>
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: COLORS.indigo }} /> Current
+                </span>
+              )}
+            </div>
+            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{exp.role}</h3>
+            <span className="text-xs font-medium" style={{ color: COLORS.indigo }}>{exp.company}</span>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <div className="text-[10px] font-mono" style={{ color: COLORS.indigo }}>{exp.duration}</div>
+            <div className="text-[10px] flex items-center gap-1 justify-end mt-0.5" style={{ color: COLORS.indigo }}>
+              <MapPin size={9} /> {exp.location}
+            </div>
+          </div>
+        </div>
+
+        <ul className="space-y-1.5 mb-3">
+          {exp.responsibilities.map((r, i) => (
+            <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+              <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: COLORS.indigo }} />
+              {r}
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex flex-wrap gap-1 pt-3" style={{ borderTop: `1px solid ${withAlpha(COLORS.indigo, 0.15)}` }}>
+          {exp.techStack.map(t => <Badge key={t} color="indigo">{t}</Badge>)}
+        </div>
+      </GlowCard>
+    </motion.div>
+  );
+}
+
+function EducationCard({ edu, index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05, duration: 0.28 }}
+    >
+      <GlowCard className="p-5 h-full">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.22)}` }}>
+            <GraduationCap size={16} style={{ color: 'var(--gold)' }} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-bold text-sm mb-0.5" style={{ color: 'var(--text-primary)' }}>{edu.degree}</div>
+            <div className="text-xs mb-0.5" style={{ color: 'var(--gold)' }}>{edu.school}</div>
+            <div className="text-[10px] mb-3" style={{ color: 'var(--text-muted)' }}>
+              {edu.affiliation} · {edu.duration}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {edu.highlights.map(h => (
+                <span key={h} className="text-[9px] font-mono px-2 py-0.5 rounded-md"
+                  style={{ color: 'var(--gold)', background: withAlpha(COLORS.gold, 0.07), border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>
+                  {h}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="font-black text-xl flex-shrink-0" style={{ color: 'var(--gold)' }}>
+            {edu.gpa}
+          </div>
+        </div>
+      </GlowCard>
+    </motion.div>
+  );
+}
 
 export function About() {
   return (
     <SectionWrapper id="about" alt>
       <SectionTitle
-        label="About Me"
-        title="The Person Behind the Code"
-        subtitle="A developer who cares about quality, UX, and the craft of building things that last."
+        label="Background"
+        title="About Me"
+        subtitle={null}
       />
 
-      <div className="grid lg:grid-cols-2 gap-12 xl:gap-20">
-
-        {/* Left */}
-        <div className="flex flex-col gap-8">
-          <motion.div variants={itemVariants}>
-            <p className="text-base leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
-              {PERSONAL.bio}
-            </p>
-            <div className="flex flex-col gap-2 text-sm" style={{ color: 'var(--text-muted)' }}>
-              <span className="flex items-center gap-2.5">
-                <MapPin size={14} style={{ color: 'var(--gold)' }} className="flex-shrink-0" />
-                {PERSONAL.location} · Open to remote
-              </span>
-              <span className="flex items-center gap-2.5">
-                <Mail size={14} style={{ color: 'var(--gold)' }} className="flex-shrink-0" />
-                {PERSONAL.email}
-              </span>
-              <span className="flex items-center gap-2.5">
-                <GraduationCap size={14} style={{ color: 'var(--gold)' }} className="flex-shrink-0" />
-                {EDUCATION[0].degree} · {EDUCATION[0].school} · {EDUCATION[0].gpa} GPA
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Timeline */}
-          <motion.div variants={itemVariants}>
-            <h3 className="font-mono text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--text-muted)' }}>
-              // journey
-            </h3>
-            <div className="relative pl-4 space-y-4" style={{ borderLeft: '1px solid var(--border-medium)' }}>
-              {TIMELINE.map((t, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.07, duration: 0.4 }}
-                  className="relative"
-                >
-                  <div
-                    className="absolute -left-[17px] top-1.5 w-2.5 h-2.5 rounded-full"
-                    style={{
-                      background:  i === TIMELINE.length - 1 ? 'var(--gold)' : 'var(--bg-elevated)',
-                      border:      `2px solid ${i === TIMELINE.length - 1 ? 'var(--gold)' : 'var(--border-medium)'}`,
-                    }}
-                  />
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--gold)' }}>{t.year}</span>
-                    <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{t.event}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="flex gap-3">
-            <Button variant="primary" href={SOCIAL.resumeLink} download>
-              <Download size={14} /> Download Resume
-            </Button>
-            <Button variant="outline" href={SOCIAL.linkedin}>
-              <ExternalLink size={14} /> LinkedIn
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* Right: stat cards */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 content-start">
-          {STATS.map((stat, i) => (
-            <GlowCard key={stat.label} className="p-6">
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 + i * 0.08, type: 'spring', stiffness: 300 }}
-              >
-                <div className="text-4xl font-black gradient-text mb-1">{stat.value}</div>
-                <div className="text-sm" style={{ color: 'var(--text-muted)' }}>{stat.label}</div>
-              </motion.div>
-            </GlowCard>
-          ))}
-
-          <GlowCard className="col-span-2 p-5 flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center"
-              style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.2)}` }}>
-              <GraduationCap size={18} style={{ color: 'var(--gold)' }} />
-            </div>
-            <div>
-              <div className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{EDUCATION[0].degree}</div>
-              <div className="text-sm mt-0.5" style={{ color: 'var(--text-secondary)' }}>
-                {EDUCATION[0].school} · {EDUCATION[0].duration}
-              </div>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {EDUCATION[0].highlights.map(h => (
-                  <span key={h}
-                    className="text-[11px] font-mono px-2 py-0.5 rounded-md"
-                    style={{ color: 'var(--text-muted)', background: 'var(--border-subtle)', border: '1px solid var(--border-medium)' }}>
-                    {h}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </GlowCard>
+      <div className="max-w-4xl mb-12">
+        <motion.p variants={itemVariants} className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+          {PERSONAL.bio}
+        </motion.p>
+        <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6">
+          <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
+            <MapPin size={12} style={{ color: 'var(--gold-dim)' }} /> {PERSONAL.location}
+          </div>
+          <a href={SOCIAL.resumeLink} download className="group">
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              className="btn-shine inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs cursor-pointer"
+              style={{ background: `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldMuted})`, color: COLORS.bgBase }}>
+              <Download size={12} /> Download Resume
+            </motion.div>
+          </a>
         </motion.div>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+
+        {/* Left — Education */}
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center gap-2 mb-6">
+            <GraduationCap size={16} style={{ color: 'var(--gold)' }} />
+            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
+              Education
+            </span>
+          </div>
+          <div className="space-y-4">
+            {EDUCATION.map((edu, i) => (
+              <EducationCard key={i} edu={edu} index={i} />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Right — Experience */}
+        <motion.div variants={itemVariants}>
+          <div className="flex items-center gap-2 mb-6">
+            <Briefcase size={16} style={{ color: COLORS.indigo }} />
+            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
+              Work Experience
+            </span>
+          </div>
+          <div className="space-y-4">
+            {EXPERIENCE.map((exp, i) => (
+              <ExperienceCard key={exp.id} exp={exp} index={i} />
+            ))}
+          </div>
+        </motion.div>
+
       </div>
     </SectionWrapper>
   );

@@ -29,8 +29,14 @@ export const COLORS = {
   border:       '#2A2A2A',
   borderHover:  'rgba(239,211,149,0.25)',  // gold at low opacity
 
+  // Indigo accent — used exclusively for work experience / professional journey
+  indigo:      '#818cf8',
+  indigoMuted: '#6366f1',
+  indigoRgb:   '129,140,248',
+
   // Semantic / status
   success:      '#10B981',   // available-for-work, full-time badge, "current" indicator
+
 
   // Social brand colours (used in Contact links)
   socialGithub:   '#94A3B8',
