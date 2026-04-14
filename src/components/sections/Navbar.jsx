@@ -7,10 +7,10 @@ import { useActiveSection } from '../../hooks/useActiveSection';
 import { COLORS, withAlpha } from '../../constants/theme';
 
 export function Navbar() {
-  const [scrolled,   setScrolled]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const sectionIds = NAV_LINKS.map(l => l.href);
-  const active     = useActiveSection(sectionIds);
+  const active = useActiveSection(sectionIds);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
@@ -36,19 +36,19 @@ export function Navbar() {
     <>
       <motion.nav
         initial={{ y: -64, opacity: 0 }}
-        animate={{ y: 0,   opacity: 1 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={scrolled ? {
-          background:           'var(--nav-bg)',
-          backdropFilter:       'blur(28px) saturate(180%)',
+          background: 'var(--nav-bg)',
+          backdropFilter: 'blur(28px) saturate(180%)',
           WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-          borderBottom:         `1px solid ${withAlpha(COLORS.gold, 0.10)}`,
-          paddingTop:           '8px',
-          paddingBottom:        '8px',
-          boxShadow:            '0 4px 32px rgba(0,0,0,0.15)',
+          borderBottom: `1px solid ${withAlpha(COLORS.gold, 0.10)}`,
+          paddingTop: '8px',
+          paddingBottom: '8px',
+          boxShadow: '0 4px 32px rgba(0,0,0,0.15)',
         } : {
-          paddingTop:    '16px',
+          paddingTop: '16px',
           paddingBottom: '16px',
         }}
       >
@@ -58,7 +58,7 @@ export function Navbar() {
           style={{
             scaleX,
             background: `linear-gradient(90deg, ${COLORS.gold}, ${COLORS.goldMuted})`,
-            boxShadow:  `0 0 8px ${withAlpha(COLORS.gold, 0.5)}`,
+            boxShadow: `0 0 8px ${withAlpha(COLORS.gold, 0.5)}`,
           }}
         />
 
@@ -83,7 +83,7 @@ export function Navbar() {
                 </div>
               </div>
               <span className="font-bold tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                {PERSONAL.firstName}<span className="gradient-text">.</span>
+                {PERSONAL.firstName}
               </span>
             </motion.div>
           </Link>
@@ -102,8 +102,8 @@ export function Navbar() {
                       className="absolute inset-0 rounded-lg"
                       style={{
                         background: withAlpha(COLORS.gold, 0.10),
-                        border:     `1px solid ${withAlpha(COLORS.gold, 0.28)}`,
-                        boxShadow:  `inset 0 1px 0 ${withAlpha(COLORS.gold, 0.15)}`,
+                        border: `1px solid ${withAlpha(COLORS.gold, 0.28)}`,
+                        boxShadow: `inset 0 1px 0 ${withAlpha(COLORS.gold, 0.15)}`,
                       }}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
@@ -131,8 +131,8 @@ export function Navbar() {
             >
               <AnimatePresence mode="wait">
                 {mobileOpen
-                  ? <motion.span key="x"   initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}><X size={18} /></motion.span>
-                  : <motion.span key="men" initial={{ rotate: 90, opacity: 0 }}  animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}><Menu size={18} /></motion.span>
+                  ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}><X size={18} /></motion.span>
+                  : <motion.span key="men" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}><Menu size={18} /></motion.span>
                 }
               </AnimatePresence>
             </motion.button>
@@ -157,8 +157,8 @@ export function Navbar() {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               className="fixed top-0 right-0 bottom-0 z-50 w-72 md:hidden flex flex-col"
               style={{
-                background:  'var(--bg-surface)',
-                borderLeft:  `1px solid ${withAlpha(COLORS.gold, 0.12)}`,
+                background: 'var(--bg-surface)',
+                borderLeft: `1px solid ${withAlpha(COLORS.gold, 0.12)}`,
                 backdropFilter: 'blur(24px)',
               }}
             >
@@ -189,8 +189,8 @@ export function Navbar() {
                         className="flex items-center gap-3 px-4 py-3.5 rounded-xl mb-1 transition-all duration-200"
                         style={active === link.href ? {
                           background: withAlpha(COLORS.gold, 0.10),
-                          border:     `1px solid ${withAlpha(COLORS.gold, 0.25)}`,
-                          color:      'var(--gold)',
+                          border: `1px solid ${withAlpha(COLORS.gold, 0.25)}`,
+                          color: 'var(--gold)',
                         } : {
                           color: 'var(--text-secondary)',
                           border: '1px solid transparent',

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { GraduationCap, Briefcase, MapPin, Download, CheckCircle } from 'lucide-react';
-import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
+import { SectionWrapper, itemVariants, containerVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
 import { GlowCard } from '../ui/GlowCard';
 import { Badge } from '../ui/Badge';
@@ -12,15 +12,10 @@ const TYPE_COLORS = {
   'Internship': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
 };
 
-function ExperienceCard({ exp, index }) {
+function ExperienceCard({ exp }) {
   const tc = TYPE_COLORS[exp.type] || TYPE_COLORS['Internship'];
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05, duration: 0.28 }}
-    >
+    <motion.div variants={itemVariants}>
       <GlowCard className="p-5 h-full" glowColor={COLORS.indigoRgb}>
         {/* Top line */}
         <div className="absolute top-0 left-0 right-0 h-[1px]"

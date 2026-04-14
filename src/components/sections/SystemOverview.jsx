@@ -21,10 +21,10 @@ export function SystemOverview() {
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 items-start">
           <div className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: withAlpha(COLORS.gold, 0.6) }} />
-          <span 
-            className="text-sm leading-relaxed" 
+          <span
+            className="text-sm leading-relaxed"
             style={{ color: 'var(--text-secondary)' }}
-            dangerouslySetInnerHTML={{ __html: item }} 
+            dangerouslySetInnerHTML={{ __html: item }}
           />
         </li>
       ))}
@@ -38,8 +38,8 @@ export function SystemOverview() {
         title={
           <span className="relative inline-block">
             System Overview
-            <motion.div 
-              className="absolute -bottom-1 left-0 right-0 h-[2px]" 
+            <motion.div
+              className="absolute -bottom-1 left-0 right-0 h-[2px]"
               style={{ background: `linear-gradient(90deg, ${COLORS.gold}, transparent)` }}
               initial={{ scaleX: 0, originX: 0 }}
               whileInView={{ scaleX: 1 }}
@@ -73,7 +73,7 @@ export function SystemOverview() {
           {/* The Strategy */}
           <motion.div variants={itemVariants}>
             <div className="font-mono text-xs tracking-widest font-bold uppercase" style={{ color: COLORS.gold }}>
-              The Strategy
+              Strategy
             </div>
             {renderBullets(DEVDUAL.theStrategy)}
           </motion.div>
@@ -82,7 +82,7 @@ export function SystemOverview() {
           <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-2">
             <a href={DEVDUAL.url} target="_blank" rel="noopener noreferrer">
               <motion.div
-                whileHover={{ scale: 1.03, y: -2, boxShadow: `0 4px 12px ${withAlpha(COLORS.gold, 0.2)}` }} 
+                whileHover={{ scale: 1.03, y: -2, boxShadow: `0 4px 12px ${withAlpha(COLORS.gold, 0.2)}` }}
                 whileTap={{ scale: 0.97 }}
                 className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all"
                 style={{ background: `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldMuted})`, color: COLORS.bgBase }}
@@ -92,7 +92,7 @@ export function SystemOverview() {
             </a>
             <a href={DEVDUAL.apiDocs} target="_blank" rel="noopener noreferrer">
               <motion.div
-                whileHover={{ scale: 1.03, y: -2, background: withAlpha(COLORS.gold, 0.1) }} 
+                whileHover={{ scale: 1.03, y: -2, background: withAlpha(COLORS.gold, 0.1) }}
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all"
                 style={{ border: `1px solid ${withAlpha(COLORS.gold, 0.35)}`, color: 'var(--gold)', background: withAlpha(COLORS.gold, 0.04) }}
@@ -107,16 +107,16 @@ export function SystemOverview() {
         <motion.div variants={itemVariants} whileHover={{ y: -4 }} className="transition-transform duration-300 h-fit">
           <GlowCard className="p-7 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4">
-               <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border" style={{ color: COLORS.success, borderColor: withAlpha(COLORS.success, 0.3), background: withAlpha(COLORS.success, 0.05) }}>
-                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5 mb-[1px]" />
-                 Live on GCP
-               </div>
+              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border" style={{ color: COLORS.success, borderColor: withAlpha(COLORS.success, 0.3), background: withAlpha(COLORS.success, 0.05) }}>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5 mb-[1px]" />
+                Live on GCP
+              </div>
             </div>
 
             <div className="font-mono text-xs tracking-widest font-bold uppercase mb-6" style={{ color: COLORS.gold }}>
               System Facts
             </div>
-            
+
             <div className="space-y-4">
               {DEVDUAL.stats.map(({ label, value, icon, highlight }) => {
                 const Icon = ICON_MAP[icon] || Activity;
@@ -126,8 +126,8 @@ export function SystemOverview() {
                       <Icon size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" style={{ color: COLORS.gold }} />
                       <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{label}</span>
                     </div>
-                    <span 
-                      className={`text-sm ${highlight ? 'font-bold' : 'font-semibold'}`} 
+                    <span
+                      className={`text-sm ${highlight ? 'font-bold' : 'font-semibold'}`}
                       style={{ color: highlight ? COLORS.gold : 'var(--text-primary)' }}
                     >
                       {value}

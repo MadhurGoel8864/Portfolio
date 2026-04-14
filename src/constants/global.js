@@ -122,11 +122,11 @@ export const DEVDUAL = {
 
   stats: [
     { label: "Backend", value: "FastAPI + PostgreSQL", icon: "database" },
-    { label: "Real-time", value: "Native WebSockets", highlight: true, icon: "zap" },
-    { label: "Execution", value: "Self-hosted Judge0", highlight: true, icon: "code" },
+    { label: "Real-time", value: "Native WebSockets", icon: "zap" },
+    { label: "Execution", value: "Self-hosted Judge0", icon: "code" },
     { label: "Infra", value: "GCP VM", icon: "server" },
     { label: "Performance", value: "< 50ms p99 auction latency", icon: "activity" },
-    { label: "Dev time", value: "3–4 months", icon: "clock" },
+    { label: "Dev time", value: "3-4 months", icon: "clock" },
   ],
 };
 
@@ -202,7 +202,7 @@ export const ARCHITECTURE = [
   },
 ];
 
-// ── Engineering Subsystems (A–E) ─────────────────────────────
+// ── Engineering Subsystems (A-E) ─────────────────────────────
 export const ENGINEERING_SYSTEMS = [
   {
     id: "auth",
@@ -221,7 +221,7 @@ export const ENGINEERING_SYSTEMS = [
       "OTP stored as key=user:otp:{email}, value=hashed_otp, TTL=5 minutes",
       "OAuth state stored in Redis for 10 minutes; validated on callback to prevent CSRF",
     ],
-    decision: "Redis blacklist over DB-based token store — revocation checks happen on every request. DB lookup at that frequency adds 5–10ms per request at scale.",
+    decision: "Redis blacklist over DB-based token store — revocation checks happen on every request. DB lookup at that frequency adds 5-10ms per request at scale.",
   },
   {
     id: "auction",
@@ -479,7 +479,7 @@ export const EDUCATION = [
     school: "Ajay Kumar Garg Engineering College (AKGEC)",
     affiliation: "Dr. A.P.J. Abdul Kalam Technical University",
     degree: "B.Tech — Computer Science Engineering (AI & ML)",
-    duration: "2021 – 2025",
+    duration: "2021 - 2025",
     gpa: "8.4 CGPA",
     location: "Ghaziabad, Uttar Pradesh",
     highlights: ["AI & ML Specialization", "Backend Development", "Competitive Programming"],
@@ -488,7 +488,7 @@ export const EDUCATION = [
     school: "Delhi Public School",
     affiliation: "C.B.S.E",
     degree: "Senior Secondary (Class XII)",
-    duration: "2019 – 2021",
+    duration: "2019 - 2021",
     gpa: "93%",
     location: "Uttar Pradesh",
     highlights: ["Physics", "Chemistry", "Mathematics", "Computer Science"],
@@ -503,7 +503,7 @@ export const EXPERIENCE = [
     company: "Unthinkable Solutions",
     companyUrl: "https://www.unthinkablesolutions.com",
     type: "Full-time",
-    duration: "Jan 2025 – Present",
+    duration: "Jan 2025 - Present",
     location: "Gurgaon (Remote)",
     current: true,
     description: "Building backend APIs and internal tools for fintech clients using FastAPI. Working across authentication, reporting, and data pipeline layers.",
@@ -520,7 +520,7 @@ export const EXPERIENCE = [
     role: "AI Research Intern",
     company: "Dwayo",
     type: "Internship",
-    duration: "Jun 2024 – Aug 2024",
+    duration: "Jun 2024 - Aug 2024",
     location: "Remote",
     current: false,
     description: "Worked on improving OCR accuracy for document processing pipelines. Applied ML post-processing techniques to reduce extraction errors.",
@@ -536,7 +536,7 @@ export const EXPERIENCE = [
     role: "Data Analyst Intern",
     company: "Binge & Bash",
     type: "Internship",
-    duration: "Jan 2024 – Mar 2024",
+    duration: "Jan 2024 - Mar 2024",
     location: "Remote",
     current: false,
     description: "Worked on data pipeline optimization and reporting automation for a food-tech startup.",
@@ -596,7 +596,7 @@ export const ACHIEVEMENTS = [
     emoji: "🚀",
     category: "Project Milestone",
     title: "Shipped DevDual — Live on GCP",
-    description: "Designed and built a full-stack competitive platform solo from scratch — backend, real-time infra, and self-hosted execution on GCP in 3–4 months.",
+    description: "Designed and built a full-stack competitive platform solo from scratch — backend, real-time infra, and self-hosted execution on GCP in 3-4 months.",
     year: "2024",
     link: "https://devduel.site",
     color: "#C8A951",
