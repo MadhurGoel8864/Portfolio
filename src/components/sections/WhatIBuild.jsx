@@ -8,7 +8,8 @@ const ICONS = [Zap, Layers, Database, Shield, GitBranch, Terminal, Activity, Wor
 export function WhatIBuild() {
   return (
     <section id="what-i-build" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
-      <SectionTitle label="Capabilities" title={<>What I <span className="gold">Build</span></>} subtitle="Not feature lists — engineering capabilities. Each one with tradeoffs considered." />
+      {/* FIX #16: tagline wording update */}
+      <SectionTitle label="Capabilities" title={<>What I <span className="gold">Build</span></>} subtitle="Not feature lists — engineering capabilities. Each one with deliberate tradeoffs." />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }} className="cap-grid-responsive">
         {CAPABILITIES.map((cap, i) => {
           const Icon = ICONS[i % ICONS.length];

@@ -34,10 +34,10 @@ export const SOCIAL = {
 
 // ── Hero Stats ───────────────────────────────────────────────
 export const STATS = [
-  { value: "1+", label: "Years Engineering Experience" },
+  { value: "1.5+", label: "Years Engineering Experience" }, // FIX #9: Jan 2025–May 2026 ≈ 16 months
   { value: "915+", label: "DSA Problems Solved" },
-  { value: "1880+", label: "LeetCode Rating" },
-  { value: "1", label: "AWS Certifications" },
+  { value: "1880", label: "LeetCode Rating" },              // FIX #14: ratings aren't cumulative, no +
+  { value: "1", label: "AWS Certification" },               // FIX #13: singular
 ];
 // ── Capabilities (replaces Skills) ──────────────────────────
 export const CAPABILITIES = [

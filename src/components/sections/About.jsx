@@ -16,7 +16,8 @@ export function About() {
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           {PERSONAL.location}
         </span>
-        <a className="btn-primary" href={SOCIAL.resumeLink} download style={{ fontSize: 11, padding: '8px 16px' }}>
+        {/* FIX #12: explicit download filename so browser saves as Madhur_Goel_Resume.pdf */}
+        <a className="btn-primary" href={SOCIAL.resumeLink} download="Madhur_Goel_Resume.pdf" style={{ fontSize: 11, padding: '8px 16px' }}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download Resume
         </a>

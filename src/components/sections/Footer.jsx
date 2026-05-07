@@ -18,11 +18,11 @@ export function Footer() {
             </p>
             <div style={{ display: 'flex', gap: 8 }}>
               {[
-                { Icon: Github, href: SOCIAL.github, label: 'GitHub' },
-                { Icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn' },
-                { Icon: Mail, href: `mailto:${PERSONAL.email}`, label: 'Email' },
+                { Icon: Github, href: SOCIAL.github, label: 'GitHub profile' },       // FIX #25
+                { Icon: Linkedin, href: SOCIAL.linkedin, label: 'LinkedIn profile' }, // FIX #25
+                { Icon: Mail, href: `mailto:${PERSONAL.email}`, label: 'Send email' },// FIX #25
               ].map(({ Icon, href, label }) => (
-                <a key={label} href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
+                <a key={label} href={href} aria-label={label} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noopener noreferrer"
                   style={{ width: 34, height: 34, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', border: '1px solid var(--border)', background: 'transparent', textDecoration: 'none', transition: 'all 0.2s' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--gold)'; e.currentTarget.style.borderColor = 'var(--border-md)'; e.currentTarget.style.background = 'var(--gold-dim)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'transparent'; }}>
