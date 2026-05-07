@@ -15,16 +15,23 @@ const ORBIT_TAGS = [
   { label: 'GCP', ring: 1, angle: 300 * Math.PI / 180 },
 ];
 
+// FIX #21: check once at module evaluation time (stable, no re-check needed)
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 function useTypewriter(roles) {
-  const [displayText, setDisplayText] = useState('');
+  // FIX #21: skip animation entirely for users who prefer reduced motion
+  const [displayText, setDisplayText] = useState(prefersReducedMotion ? roles[0] : '');
   const [roleIdx, setRoleIdx] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    if (prefersReducedMotion) return; // FIX #21
+
     const role = roles[roleIdx];
     let timeout;
+    // FIX #17: 3 000ms pause (was 2 000ms) so the full role is visible before deletion starts
     if (!isDeleting && displayText === role) {
-      timeout = setTimeout(() => setIsDeleting(true), 2000);
+      timeout = setTimeout(() => setIsDeleting(true), 3000);
     } else if (isDeleting && displayText === '') {
       setIsDeleting(false);
       setRoleIdx(i => (i + 1) % roles.length);
@@ -51,6 +58,8 @@ function useCountUp(target, duration = 1200, start = false) {
     const suffix = target.replace(/[0-9.]/g, '');
     const num = parseFloat(raw);
     if (isNaN(num)) { setValue(target); return; }
+    // FIX #21: skip animation for reduced-motion users — jump straight to final value
+    if (prefersReducedMotion) { setValue(num + suffix); return; }
     const t0 = performance.now();
     const tick = now => {
       const p = Math.min((now - t0) / duration, 1);
@@ -95,6 +104,24 @@ function OrbitSystem() {
   const RADII = [0.84 / 2, 1.08 / 2];
 
   useEffect(() => {
+    // FIX #21: skip orbit animation for reduced-motion users
+    if (prefersReducedMotion) {
+      // Still position chips statically at their initial angles
+      const container = containerRef.current;
+      if (!container) return;
+      const size = container.offsetWidth;
+      tagRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const tag = ORBIT_TAGS[i];
+        const r = RADII[tag.ring] * size;
+        const a = tag.angle;
+        el.style.left = (size / 2 + Math.cos(a) * r) + 'px';
+        el.style.top = (size / 2 + Math.sin(a) * r) + 'px';
+        el.style.transform = 'translate(-50%, -50%)';
+      });
+      return;
+    }
+
     let last = performance.now();
     const animate = (now) => {
       const dt = now - last; last = now;
@@ -120,8 +147,9 @@ function OrbitSystem() {
     };
     rafRef.current = requestAnimationFrame(animate);
 
-    // Magnetic photo effect
+    // Magnetic photo effect — skip for reduced-motion users
     const onMove = (e) => {
+      if (prefersReducedMotion) return;
       const photo = photoRef.current;
       if (!photo) return;
       const rect = photo.getBoundingClientRect();
@@ -163,7 +191,8 @@ function OrbitSystem() {
           border: ring.border,
           top: '50%', left: '50%',
           transform: 'translate(-50%, -50%)',
-          animation: `spin ${ring.duration} linear ${ring.direction} infinite`,
+          // FIX #21: skip CSS spin animations for reduced-motion users
+          animation: prefersReducedMotion ? 'none' : `spin ${ring.duration} linear ${ring.direction} infinite`,
         }} />
       ))}
 
@@ -177,12 +206,12 @@ function OrbitSystem() {
         <div style={{
           position: 'absolute', inset: -18, borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(200,169,81,0.22) 0%, transparent 70%)',
-          animation: 'glowPulse 3s ease-in-out infinite', zIndex: -1,
+          animation: prefersReducedMotion ? 'none' : 'glowPulse 3s ease-in-out infinite', zIndex: -1, // FIX #21
         }} />
         <div style={{
           position: 'absolute', inset: -6, borderRadius: '50%',
           border: '1px solid rgba(200,169,81,0.28)',
-          animation: 'spinRaw 8s linear infinite',
+          animation: prefersReducedMotion ? 'none' : 'spinRaw 8s linear infinite', // FIX #21
         }}>
           <div style={{
             position: 'absolute', top: -3, left: '50%', transform: 'translateX(-50%)',
@@ -190,9 +219,10 @@ function OrbitSystem() {
             background: 'var(--gold)', boxShadow: '0 0 8px var(--gold)',
           }} />
         </div>
+        {/* FIX #26: descriptive alt text for the profile image */}
         <img
           src={PERSONAL.profileImage}
-          alt={PERSONAL.name}
+          alt="Madhur Goel — backend engineer"
           style={{
             width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%',
             border: '2px solid rgba(200,169,81,0.4)', display: 'block',
@@ -200,7 +230,8 @@ function OrbitSystem() {
         />
       </div>
 
-      {/* Orbit tags */}
+      {/* FIX #20: Orbit tags stay behind terminal cards (zIndex 6 < card zIndex 15).
+          Already have pointerEvents:'none' so they don't intercept clicks. */}
       {ORBIT_TAGS.map((tag, i) => (
         <div
           key={tag.label}
@@ -211,28 +242,30 @@ function OrbitSystem() {
             padding: '4px 10px', borderRadius: 4,
             background: 'rgba(14,13,11,0.88)', border: '1px solid var(--border-md)',
             color: 'var(--gold)', whiteSpace: 'nowrap',
-            backdropFilter: 'blur(8px)', pointerEvents: 'none', zIndex: 10,
+            backdropFilter: 'blur(8px)', pointerEvents: 'none', zIndex: 6,
           }}
         >
           {tag.label}
         </div>
       ))}
 
-      {/* Terminal card 1 */}
+      {/* FIX #20: Terminal cards promoted above orbit chips (zIndex 15) with
+          near-opaque background so chips never bleed through */}
+      {/* Terminal card 1 — system.status */}
       <div style={{
         position: 'absolute', bottom: '-4%', right: '-10%',
         width: 'clamp(160px, 15vw, 220px)',
-        background: 'rgba(14,13,11,0.92)', border: '1px solid rgba(200,169,81,0.2)',
+        background: 'rgba(14,13,11,0.96)', border: '1px solid rgba(200,169,81,0.2)',
         borderRadius: 10, padding: 14, backdropFilter: 'blur(12px)',
-        fontFamily: 'var(--mono)', fontSize: 10, zIndex: 10,
-        animation: 'floatA 4s ease-in-out infinite',
+        fontFamily: 'var(--mono)', fontSize: 10, zIndex: 15,
+        animation: prefersReducedMotion ? 'none' : 'floatA 4s ease-in-out infinite', // FIX #21
       }}>
         <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>// system.status</div>
         {[
           { k: 'role', v: 'backend_eng', vc: '#C8A951' },
           { k: 'status', v: '● available', vc: '#3ddc84' },
           { k: 'p99_latency', v: '<50ms', vc: '#3ddc84' },
-          { k: 'stack', v: 'FastAPI + PG', vc: 'var(--text)' }, // FIX #18: consistent spacing
+          { k: 'stack', v: 'FastAPI + PG', vc: 'var(--text)' },
         ].map(r => (
           <div key={r.k} style={{ display: 'flex', justifyContent: 'space-between', gap: 6, marginBottom: 5 }}>
             <span style={{ color: 'var(--muted)' }}>{r.k}</span>
@@ -241,14 +274,14 @@ function OrbitSystem() {
         ))}
       </div>
 
-      {/* Terminal card 2 */}
+      {/* Terminal card 2 — last_deploy */}
       <div style={{
         position: 'absolute', top: '-2%', left: '-10%',
         width: 'clamp(140px, 13vw, 195px)',
-        background: 'rgba(14,13,11,0.92)', border: '1px solid rgba(129,140,248,0.22)',
+        background: 'rgba(14,13,11,0.96)', border: '1px solid rgba(129,140,248,0.22)',
         borderRadius: 10, padding: 14, backdropFilter: 'blur(12px)',
-        fontFamily: 'var(--mono)', fontSize: 10, zIndex: 10,
-        animation: 'floatB 5s ease-in-out infinite',
+        fontFamily: 'var(--mono)', fontSize: 10, zIndex: 15,
+        animation: prefersReducedMotion ? 'none' : 'floatB 5s ease-in-out infinite', // FIX #21
       }}>
         <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>// last_deploy</div>
         {[
@@ -325,7 +358,7 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* Typewriter */}
+        {/* Typewriter — FIX #17: caret is a separate element with blink 1s step-end */}
         <motion.div variants={child} style={{
           fontFamily: 'var(--mono)', fontSize: 'clamp(13px, 1.4vw, 16px)',
           color: 'var(--muted)', margin: '0 0 20px',
@@ -333,7 +366,8 @@ export function Hero() {
         }}>
           <span style={{ color: 'var(--muted)' }}>→&nbsp;</span>
           <span style={{ color: 'var(--text)', fontWeight: 500 }}>{roleText}</span>
-          <span style={{ display: 'inline-block', width: 2, height: '1em', background: 'var(--gold)', animation: 'blink 0.85s step-end infinite', borderRadius: 1 }} />
+          {/* FIX #17: blink duration updated to 1s per spec */}
+          <span style={{ display: 'inline-block', width: 2, height: '1em', background: 'var(--gold)', animation: 'blink 1s step-end infinite', borderRadius: 1 }} />
         </motion.div>
 
         {/* Tagline */}
@@ -375,13 +409,14 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Social row */}
+        {/* Social row — FIX #25: aria-labels on icon-only links */}
         <motion.div variants={child} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
           {[
-            { href: SOCIAL.github, label: 'GitHub', svg: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg> },
-            { href: SOCIAL.linkedin, label: 'LinkedIn', svg: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
-          ].map(({ href, label, svg }) => (
-            <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+            { href: SOCIAL.github, ariaLabel: 'GitHub profile', svg: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg> },
+            { href: SOCIAL.linkedin, ariaLabel: 'LinkedIn profile', svg: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+          ].map(({ href, ariaLabel, svg }) => (
+            <a key={ariaLabel} href={href} target="_blank" rel="noopener noreferrer"
+              aria-label={ariaLabel}
               style={{
                 width: 34, height: 34, borderRadius: 8,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',

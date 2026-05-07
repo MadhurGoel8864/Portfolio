@@ -7,6 +7,8 @@ export function CustomCursor() {
   const labelRef = useRef(null);
 
   useEffect(() => {
+    // FIX #21: respect prefers-reduced-motion — skip entire custom cursor
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     // Only run on non-touch devices
     if ('ontouchstart' in window) return;
 

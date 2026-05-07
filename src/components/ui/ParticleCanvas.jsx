@@ -4,6 +4,9 @@ export function ParticleCanvas() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    // FIX #21: respect prefers-reduced-motion — skip particle animation entirely
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let W, H, particles, mouse = { x: -999, y: -999 }, rafId;
