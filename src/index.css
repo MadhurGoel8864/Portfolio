@@ -117,13 +117,24 @@ html, body {
    ═══════════════════════════════════════════════════════════ */
 
 @layer base {
-  html { scroll-behavior: smooth; }
+  /* FIX #27: CSS smooth-scroll removed — react-scroll's JS-based scroll (600ms) handles
+     all nav links. Removing it prevents double-smoothing and lets long-range jumps
+     feel snappy. Native anchors and ScrollToTop use react-scroll too. */
+  /* FIX #8: Ensure html/body never lock vertical scroll. overflow-x:hidden stays. */
+  html { overflow-y: auto; }
 
   body {
     @apply antialiased;
     background-color: var(--bg);
     color: var(--text);
     overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* FIX #3: Deterministic offset so section headings clear the fixed nav (80px) */
+  #hero, #about, #system-overview, #what-i-build,
+  #architecture, #engineering-systems, #achievements {
+    scroll-margin-top: 80px;
   }
 
   ::-webkit-scrollbar { width: 4px; }
