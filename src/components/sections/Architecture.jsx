@@ -22,7 +22,9 @@ export function Architecture() {
                   <div style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{layer.name}</div>
                   <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--gold)', background: 'var(--gold-dim)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: 4, marginTop: 4, display: 'inline-block' }}>{layer.tech}</span>
                 </div>
-                <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 11, color: 'var(--muted)', lineHeight: 1.75, margin: '12px 0' }}>{layer.description}</p>
+                {/* FIX #22: min-height clamps description to 4 lines so bullet lists
+                    always start at the same vertical position across all cards */}
+                <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 11, color: 'var(--muted)', lineHeight: 1.75, margin: '12px 0', minHeight: '7.7em' }}>{layer.description}</p>
                 <ul style={{ listStyle: 'none', marginTop: 'auto' }}>
                   {layer.points.map((p, j) => (
                     <li key={j} style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--text-2)', display: 'flex', gap: 8, marginBottom: 6, lineHeight: 1.5 }}>

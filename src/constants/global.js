@@ -550,6 +550,8 @@ export const EXPERIENCE = [
 ];
 
 // ── Achievements ─────────────────────────────────────────────
+// FIX #23: Per-category accent palette — Competitive→amber, Contest→emerald,
+// Research→fuchsia, Certification→sky, Project Milestone→violet, Community→orange
 export const ACHIEVEMENTS = [
   {
     id: "leetcode",
@@ -559,7 +561,7 @@ export const ACHIEVEMENTS = [
     description: "Reached Knight badge with a contest rating of 1880+. Solved 915+ problems across data structures, algorithms, and system design categories.",
     year: "2024",
     link: "https://leetcode.com/madhurgoel88/",
-    color: "#F0A30A",
+    color: "#F59E0B", // amber
   },
   {
     id: "bidbuzz-winner",
@@ -569,7 +571,7 @@ export const ACHIEVEMENTS = [
     description: "My team won the BidBuzz contest hosted in our college. I really liked the idea, which became the inspiration for creating DevDual.",
     year: "2024",
     link: null,
-    color: "#1DA1F2",
+    color: "#10B981", // emerald
   },
   {
     id: "brain-tumor",
@@ -579,7 +581,7 @@ export const ACHIEVEMENTS = [
     description: "Co-authored a published research paper on automated brain tumor classification using CNNs. Achieved 98.2% accuracy on the BraTS dataset.",
     year: "2023",
     link: null,
-    color: "#E74C3C",
+    color: "#D946EF", // fuchsia
   },
   {
     id: "aws",
@@ -589,7 +591,7 @@ export const ACHIEVEMENTS = [
     description: "Certified in AWS Cloud fundamentals — compute, storage, networking, IAM, and core service architecture.",
     year: "2023",
     link: null,
-    color: "#818cf8",
+    color: "#0EA5E9", // sky
   },
   {
     id: "devdual-launch",
@@ -599,7 +601,7 @@ export const ACHIEVEMENTS = [
     description: "Designed and built a full-stack competitive platform solo from scratch — backend, real-time infra, and self-hosted execution on GCP in 3-4 months.",
     year: "2024",
     link: "https://devduel.site",
-    color: "#C8A951",
+    color: "#8B5CF6", // violet
   },
   {
     id: "dsa-mentor",
@@ -608,7 +610,7 @@ export const ACHIEVEMENTS = [
     title: "DSA Mentor — 100+ Students",
     description: "Mentored college peers and juniors in data structures and algorithms. Conducted weekly problem sessions and mock interviews.",
     year: "2023",
-    color: "#27AE60",
+    color: "#F97316", // orange
     link: null,
   },
 ];
