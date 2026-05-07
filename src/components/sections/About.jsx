@@ -1,165 +1,99 @@
 import { motion } from 'framer-motion';
-import { GraduationCap, Briefcase, MapPin, Download, CheckCircle } from 'lucide-react';
-import { SectionWrapper, itemVariants, containerVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
-import { GlowCard } from '../ui/GlowCard';
-import { Badge } from '../ui/Badge';
 import { PERSONAL, EDUCATION, EXPERIENCE, SOCIAL } from '../../constants/global';
-import { COLORS, withAlpha } from '../../constants/theme';
-
-const TYPE_COLORS = {
-  'Full-time': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
-  'Internship': { bg: withAlpha(COLORS.indigo, 0.10), text: COLORS.indigo, border: withAlpha(COLORS.indigo, 0.28) },
-};
-
-function ExperienceCard({ exp }) {
-  const tc = TYPE_COLORS[exp.type] || TYPE_COLORS['Internship'];
-  return (
-    <motion.div variants={itemVariants}>
-      <GlowCard className="p-5 h-full" glowColor={COLORS.indigoRgb}>
-        {/* Top line */}
-        <div className="absolute top-0 left-0 right-0 h-[1px]"
-          style={{ background: `linear-gradient(90deg, transparent, ${withAlpha(COLORS.indigo, 0.55)}, transparent)` }} />
-
-        <div className="flex items-start justify-between gap-2 mb-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full"
-                style={{ background: tc.bg, color: tc.text, border: `1px solid ${tc.border}` }}>
-                {exp.type}
-              </span>
-              {exp.current && (
-                <span className="flex items-center gap-1 text-[10px] font-semibold" style={{ color: COLORS.indigo }}>
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: COLORS.indigo }} /> Current
-                </span>
-              )}
-            </div>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{exp.role}</h3>
-            <span className="text-xs font-medium" style={{ color: COLORS.indigo }}>{exp.company}</span>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className="text-[10px] font-mono" style={{ color: COLORS.indigo }}>{exp.duration}</div>
-            <div className="text-[10px] flex items-center gap-1 justify-end mt-0.5" style={{ color: COLORS.indigo }}>
-              <MapPin size={9} /> {exp.location}
-            </div>
-          </div>
-        </div>
-
-        <ul className="space-y-1.5 mb-3">
-          {exp.responsibilities.map((r, i) => (
-            <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
-              <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: COLORS.indigo }} />
-              {r}
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap gap-1 pt-3" style={{ borderTop: `1px solid ${withAlpha(COLORS.indigo, 0.15)}` }}>
-          {exp.techStack.map(t => <Badge key={t} color="indigo">{t}</Badge>)}
-        </div>
-      </GlowCard>
-    </motion.div>
-  );
-}
-
-function EducationCard({ edu, index }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05, duration: 0.28 }}
-    >
-      <GlowCard className="p-5 h-full">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.22)}` }}>
-            <GraduationCap size={16} style={{ color: 'var(--gold)' }} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="font-bold text-sm mb-0.5" style={{ color: 'var(--text-primary)' }}>{edu.degree}</div>
-            <div className="text-xs mb-0.5" style={{ color: 'var(--gold)' }}>{edu.school}</div>
-            <div className="text-[10px] mb-3" style={{ color: 'var(--text-muted)' }}>
-              {edu.affiliation} · {edu.duration}
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {edu.highlights.map(h => (
-                <span key={h} className="text-[9px] font-mono px-2 py-0.5 rounded-md"
-                  style={{ color: 'var(--gold)', background: withAlpha(COLORS.gold, 0.07), border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>
-                  {h}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="font-black text-xl flex-shrink-0" style={{ color: 'var(--gold)' }}>
-            {edu.gpa}
-          </div>
-        </div>
-      </GlowCard>
-    </motion.div>
-  );
-}
 
 export function About() {
   return (
-    <SectionWrapper id="about" alt>
-      <SectionTitle
-        label="Background"
-        title="About Me"
-        subtitle={null}
-      />
+    <section id="about" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
+      <SectionTitle label="Background" title="About Me" subtitle={null} />
 
-      <div className="max-w-6xl mb-12">
-        <motion.p variants={itemVariants} className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
-          {PERSONAL.bio}
-        </motion.p>
-        <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-            <MapPin size={12} style={{ color: 'var(--gold-dim)' }} /> {PERSONAL.location}
-          </div>
-          <a href={SOCIAL.resumeLink} download className="group">
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className="btn-shine inline-flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs cursor-pointer"
-              style={{ background: `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldMuted})`, color: COLORS.bgBase }}>
-              <Download size={12} /> Download Resume
-            </motion.div>
-          </a>
-        </motion.div>
+      <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 13, color: 'var(--text-2)', lineHeight: 1.8, maxWidth: 680, marginBottom: 24 }}>
+        {PERSONAL.bio}
+      </p>
+
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 48 }}>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {PERSONAL.location}
+        </span>
+        <a className="btn-primary" href={SOCIAL.resumeLink} download style={{ fontSize: 11, padding: '8px 16px' }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Resume
+        </a>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-
-        {/* Left — Education */}
-        <motion.div variants={itemVariants}>
-          <div className="flex items-center gap-2 mb-6">
-            <GraduationCap size={16} style={{ color: 'var(--gold)' }} />
-            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
-              Education
-            </span>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }} className="about-grid-responsive">
+        {/* Education */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--gold-dim)', border: '1px solid var(--border-md)' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted)' }}>Education</span>
           </div>
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {EDUCATION.map((edu, i) => (
-              <EducationCard key={i} edu={edu} index={i} />
+              <motion.div key={i} className="card card-glow-gold"
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+                <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', gap: 12 }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{edu.degree}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--gold)', marginBottom: 3 }}>{edu.school}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--muted)', marginBottom: 12 }}>{edu.affiliation} · {edu.duration}</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                      {edu.highlights.map(h => <span key={h} className="chip chip-gold">{h}</span>)}
+                    </div>
+                  </div>
+                  <div style={{ fontFamily: 'var(--syne)', fontSize: 20, fontWeight: 800, color: 'var(--gold)', flexShrink: 0 }}>{edu.gpa.split(' ')[0]}</div>
+                </div>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Right — Experience */}
-        <motion.div variants={itemVariants}>
-          <div className="flex items-center gap-2 mb-6">
-            <Briefcase size={16} style={{ color: COLORS.indigo }} />
-            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>
-              Work Experience
-            </span>
+        {/* Experience */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(129,140,248,0.12)', border: '1px solid rgba(129,140,248,0.22)' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted)' }}>Work Experience</span>
           </div>
-          <div className="space-y-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {EXPERIENCE.map((exp, i) => (
-              <ExperienceCard key={exp.id} exp={exp} index={i} />
+              <motion.div key={exp.id}
+                className="card card-glow-indigo"
+                style={{ borderTop: `2px solid ${exp.current ? 'var(--indigo)' : 'rgba(129,140,248,0.4)'}` }}
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+                <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', gap: 8, marginBottom: 10 }}>
+                  <div>
+                    <span className="chip chip-indigo" style={{ marginBottom: 6, display: 'inline-block' }}>
+                      {exp.type}{exp.current ? ' · Current' : ''}
+                    </span>
+                    <div style={{ fontFamily: 'var(--syne)', fontSize: 15, fontWeight: 700, color: 'var(--text)', margin: '6px 0 2px' }}>{exp.role}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--indigo)', marginBottom: 4 }}>{exp.company}</div>
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--indigo)' }}>{exp.duration}</div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--muted)', marginTop: 2 }}>{exp.location}</div>
+                  </div>
+                </div>
+                <ul style={{ listStyle: 'none', marginBottom: 12 }}>
+                  {exp.responsibilities.slice(0, 3).map((r, j) => (
+                    <li key={j} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 12, color: 'var(--text-2)', padding: '3px 0', display: 'flex', gap: 8, alignItems: 'flex-start', lineHeight: 1.5 }}>
+                      <span style={{ color: 'var(--indigo)', flexShrink: 0, marginTop: 1, fontSize: 10 }}>▸</span>
+                      {r}
+                    </li>
+                  ))}
+                </ul>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                  {exp.techStack.map(t => <span key={t} className="chip chip-indigo">{t}</span>)}
+                </div>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
-
+        </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

@@ -1,61 +1,47 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
-import { GlowCard } from '../ui/GlowCard';
 import { ENGINEERING_SYSTEMS, REALTIME_DESIGN, CACHING } from '../../constants/global';
-import { COLORS, withAlpha } from '../../constants/theme';
-import { ChevronDown, Radio, Database } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
-// ─────────────────────────────────────────────
-//  Subsystem accordion
-// ─────────────────────────────────────────────
+function SectionDivider({ label }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '60px 0 40px' }}>
+      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--muted)', padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 99, whiteSpace: 'nowrap' }}>{label}</span>
+      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+    </div>
+  );
+}
+
 function SubsystemCard({ sys, isOpen, onToggle }) {
   return (
-    <motion.div
-      whileHover={{ 
-        y: isOpen ? 0 : -3,
-        backgroundColor: isOpen ? withAlpha(COLORS.gold, 0.05) : withAlpha(COLORS.gold, 0.015),
-        borderColor: isOpen ? withAlpha(COLORS.gold, 0.40) : withAlpha(COLORS.gold, 0.15)
-      }}
-      className="rounded-2xl overflow-hidden transition-all duration-300"
-      style={{
-        backgroundColor: isOpen ? withAlpha(COLORS.gold, 0.03) : 'var(--bg-surface)',
-        borderColor: isOpen ? withAlpha(COLORS.gold, 0.30) : 'var(--border-subtle)',
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        boxShadow: isOpen ? `0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px ${withAlpha(COLORS.gold, 0.12)}` : 'none',
-      }}
-    >
-      {/* Header — always visible */}
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center gap-4 px-6 py-4 text-left cursor-pointer"
-      >
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm flex-shrink-0 transition-all"
-          style={{
-            background: isOpen ? `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldMuted})` : withAlpha(COLORS.gold, 0.08),
-            color:      isOpen ? COLORS.bgBase : 'var(--gold)',
-            border:     isOpen ? 'none' : `1px solid ${withAlpha(COLORS.gold, 0.22)}`,
-          }}
-        >
-          {sys.label}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="font-bold text-sm" style={{ color: isOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
-            {sys.name}
-          </div>
-          {!isOpen && (
-            <div className="text-xs truncate mt-0.5" style={{ color: 'var(--text-muted)' }}>{sys.what}</div>
-          )}
+    <div style={{
+      borderRadius: 16, overflow: 'hidden',
+      background: isOpen ? 'rgba(200,169,81,0.03)' : 'var(--surface)',
+      border: `1px solid ${isOpen ? 'rgba(200,169,81,0.30)' : 'var(--border)'}`,
+      boxShadow: isOpen ? '0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(200,169,81,0.12)' : 'none',
+      transition: 'all 0.3s',
+    }}>
+      <button onClick={onToggle} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 16, padding: '16px 24px', textAlign: 'left', background: 'transparent', border: 'none' }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 8,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'var(--mono)', fontWeight: 700, fontSize: 13, flexShrink: 0,
+          background: isOpen ? 'linear-gradient(135deg, var(--gold), var(--gold-muted))' : 'var(--gold-dim)',
+          color: isOpen ? '#0e0d0b' : 'var(--gold)',
+          border: isOpen ? 'none' : '1px solid var(--border-md)',
+          transition: 'all 0.2s',
+        }}>{sys.label}</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 600, color: isOpen ? 'var(--text)' : 'var(--text-2)' }}>{sys.name}</div>
+          {!isOpen && <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: 2 }}>{sys.what}</div>}
         </div>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
-          <ChevronDown size={16} style={{ color: 'var(--text-muted)' }} />
+          <ChevronDown size={16} style={{ color: 'var(--muted)' }} />
         </motion.div>
       </button>
 
-      {/* Body — animated */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -63,187 +49,101 @@ function SubsystemCard({ sys, isOpen, onToggle }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="overflow-hidden"
+            style={{ overflow: 'hidden' }}
           >
-            <div className="px-6 pb-6 space-y-5" style={{ borderTop: `1px solid ${withAlpha(COLORS.gold, 0.10)}` }}>
-              <p className="text-sm leading-relaxed pt-4" style={{ color: 'var(--text-secondary)' }}>{sys.what}</p>
+            <div style={{ padding: '0 24px 24px', borderTop: '1px solid rgba(200,169,81,0.10)' }}>
+              <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 16, paddingTop: 16 }}>{sys.what}</p>
 
-              <div className="grid sm:grid-cols-2 gap-4">
-                {/* Challenges */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, margin: '16px 0' }} className="eng-two-col-responsive">
                 <div>
-                  <div className="font-mono text-[10px] tracking-widest uppercase mb-2" style={{ color: withAlpha(COLORS.gold, 0.6) }}>
-                    Challenges
-                  </div>
-                  <ul className="space-y-2">
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(200,169,81,0.6)', marginBottom: 8 }}>Challenges</div>
+                  <ul style={{ listStyle: 'none' }}>
                     {sys.challenges.map((c, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: withAlpha(COLORS.gold, 0.6) }} />
-                        {c}
+                      <li key={i} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 12, color: 'var(--text-2)', display: 'flex', gap: 8, marginBottom: 8, lineHeight: 1.5 }}>
+                        <span style={{ color: 'rgba(200,169,81,0.5)', flexShrink: 0 }}>▸</span>{c}
                       </li>
                     ))}
                   </ul>
                 </div>
-
-                {/* Implementation */}
                 <div>
-                  <div className="font-mono text-[10px] tracking-widest uppercase mb-2" style={{ color: withAlpha(COLORS.gold, 0.6) }}>
-                    Implementation
-                  </div>
-                  <ul className="space-y-2">
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(200,169,81,0.6)', marginBottom: 8 }}>Implementation</div>
+                  <ul style={{ listStyle: 'none' }}>
                     {sys.implementation.map((p, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
-                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: 'var(--gold)' }} />
-                        {p}
+                      <li key={i} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 12, color: 'var(--text-2)', display: 'flex', gap: 8, marginBottom: 8, lineHeight: 1.5 }}>
+                        <span style={{ color: 'var(--gold)', flexShrink: 0 }}>▸</span>{p}
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
 
-              {/* Decision */}
-              <div
-                className="p-4 rounded-xl text-xs leading-relaxed"
-                style={{ background: withAlpha(COLORS.gold, 0.05), border: `1px solid ${withAlpha(COLORS.gold, 0.15)}` }}
-              >
-                <span className="font-mono font-bold mr-2" style={{ color: 'var(--gold)' }}>Decision:</span>
-                <span style={{ color: 'var(--text-secondary)' }}>{sys.decision}</span>
+              <div style={{ background: 'rgba(200,169,81,0.05)', border: '1px solid var(--border)', borderRadius: 10, padding: 14, fontSize: 12, lineHeight: 1.6 }}>
+                <span style={{ color: 'var(--gold)', fontWeight: 700, fontFamily: 'var(--mono)', marginRight: 6 }}>Decision:</span>
+                <span style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', color: 'var(--text-2)' }}>{sys.decision}</span>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
-  );
-}
-
-// ─────────────────────────────────────────────
-//  Real-time subsection
-// ─────────────────────────────────────────────
-function RealtimeBlock() {
-  return (
-    <div className="mt-16">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.22)}` }}>
-          <Radio size={16} style={{ color: 'var(--gold)' }} />
-        </div>
-        <div>
-          <div className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Real-Time System Design</div>
-          <div className="text-xs font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>WebSocket architecture — the core differentiator</div>
-        </div>
-      </div>
-
-      <p className="text-sm leading-relaxed mb-6 max-w-3xl" style={{ color: 'var(--text-secondary)' }}>
-        {REALTIME_DESIGN.overview}
-      </p>
-
-      <div className="grid sm:grid-cols-2 gap-4 mb-6">
-        {REALTIME_DESIGN.components.map((c, i) => (
-          <GlowCard key={i} className="p-4">
-            <div className="font-semibold text-sm mb-1" style={{ color: 'var(--gold)' }}>{c.name}</div>
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{c.description}</p>
-          </GlowCard>
-        ))}
-      </div>
-
-      {/* Concurrency */}
-      <div className="p-4 rounded-xl mb-6" style={{ background: withAlpha(COLORS.gold, 0.05), border: `1px solid ${withAlpha(COLORS.gold, 0.15)}` }}>
-        <div className="font-mono text-[10px] tracking-widest uppercase mb-2" style={{ color: withAlpha(COLORS.gold, 0.7) }}>Concurrency Approach</div>
-        <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{REALTIME_DESIGN.concurrency}</p>
-      </div>
-
-      {/* Known limitations */}
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <div className="font-mono text-[10px] tracking-widest uppercase mb-3" style={{ color: 'var(--text-muted)' }}>Known Limitations</div>
-          <ul className="space-y-2">
-            {REALTIME_DESIGN.limitations.map((l, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-                <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: withAlpha(COLORS.gold, 0.4) }} />
-                {l}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
     </div>
   );
 }
 
-// ─────────────────────────────────────────────
-//  Caching subsection
-// ─────────────────────────────────────────────
-function CachingBlock() {
-  return (
-    <div className="mt-14">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.22)}` }}>
-          <Database size={16} style={{ color: 'var(--gold)' }} />
-        </div>
-        <div>
-          <div className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Caching & State Strategy</div>
-          <div className="text-xs font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>Six Redis use cases — each solving correctness, not just speed</div>
-        </div>
-      </div>
-
-      <p className="text-sm leading-relaxed mb-6 max-w-3xl" style={{ color: 'var(--text-secondary)' }}>
-        {CACHING.overview}
-      </p>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-          <thead>
-            <tr>
-              {['Use Case', 'Structure', 'TTL', 'Why Redis — not DB'].map(h => (
-                <th key={h} className="text-left px-4 py-2.5 font-mono tracking-wider"
-                  style={{ color: withAlpha(COLORS.gold, 0.7), background: withAlpha(COLORS.gold, 0.06), borderBottom: `1px solid ${withAlpha(COLORS.gold, 0.15)}` }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {CACHING.useCases.map((u, i) => (
-              <tr key={i} style={{ borderBottom: `1px solid ${withAlpha(COLORS.gold, 0.07)}` }}
-                onMouseEnter={e => { Array.from(e.currentTarget.cells).forEach(c => { c.style.background = withAlpha(COLORS.gold, 0.04); }); }}
-                onMouseLeave={e => { Array.from(e.currentTarget.cells).forEach(c => { c.style.background = 'transparent'; }); }}>
-                <td className="px-4 py-3 font-semibold" style={{ color: 'var(--gold)' }}>{u.key}</td>
-                <td className="px-4 py-3 font-mono" style={{ color: 'var(--text-muted)' }}>{u.structure}</td>
-                <td className="px-4 py-3" style={{ color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{u.ttl}</td>
-                <td className="px-4 py-3" style={{ color: 'var(--text-secondary)' }}>{u.why}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────
-//  Main export
-// ─────────────────────────────────────────────
 export function EngineeringSystems() {
   const [openIdx, setOpenIdx] = useState(-1);
 
   return (
-    <SectionWrapper id="engineering-systems" alt>
-      <SectionTitle
-        label="Engineering"
-        title="Key Engineering Systems"
-        subtitle="DevDual broken down by subsystem — what each does, why it's non-trivial, and what tradeoffs were made."
-      />
+    <section id="engineering-systems" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
+      <SectionTitle label="Engineering" title="Key Engineering Systems" subtitle="DevDual broken down by subsystem — what each does, why it's non-trivial, and what tradeoffs were made." />
 
-      <motion.div variants={itemVariants} className="space-y-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {ENGINEERING_SYSTEMS.map((sys, i) => (
-          <SubsystemCard
-            key={sys.id}
-            sys={sys}
-            isOpen={openIdx === i}
-            onToggle={() => setOpenIdx(openIdx === i ? -1 : i)}
-          />
+          <SubsystemCard key={sys.id} sys={sys} isOpen={openIdx === i} onToggle={() => setOpenIdx(openIdx === i ? -1 : i)} />
         ))}
-      </motion.div>
+      </div>
 
-    </SectionWrapper>
+      <SectionDivider label="Real-Time Design" />
+
+      <div style={{ marginBottom: 6 }}>
+        <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 16, maxWidth: 700 }}>{REALTIME_DESIGN.overview}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 20 }} className="rt-grid-responsive">
+          {REALTIME_DESIGN.components.map((c, i) => (
+            <div key={i} className="card">
+              <div style={{ fontFamily: 'var(--syne)', fontSize: 13, fontWeight: 700, color: 'var(--gold)', marginBottom: 6 }}>{c.name}</div>
+              <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 11, color: 'var(--muted)', lineHeight: 1.7 }}>{c.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <SectionDivider label="Caching Strategy" />
+
+      <div>
+        <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 24, maxWidth: 700 }}>{CACHING.overview}</p>
+        <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
+          <table style={{ width: '100%', fontSize: 12, borderCollapse: 'separate', borderSpacing: 0 }}>
+            <thead>
+              <tr>
+                {['Use Case', 'Structure', 'TTL', 'Why Redis — not DB'].map(h => (
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 16px', fontFamily: 'var(--mono)', color: 'rgba(200,169,81,0.7)', background: 'rgba(200,169,81,0.06)', borderBottom: '1px solid rgba(200,169,81,0.15)', fontSize: 11 }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {CACHING.useCases.map((u, i) => (
+                <tr key={i} style={{ borderBottom: '1px solid rgba(200,169,81,0.07)' }}
+                  onMouseEnter={e => Array.from(e.currentTarget.cells).forEach(c => { c.style.background = 'rgba(200,169,81,0.03)'; })}
+                  onMouseLeave={e => Array.from(e.currentTarget.cells).forEach(c => { c.style.background = 'transparent'; })}>
+                  <td style={{ padding: '12px 16px', fontFamily: 'var(--mono)', fontWeight: 600, color: 'var(--gold)' }}>{u.key}</td>
+                  <td style={{ padding: '12px 16px', fontFamily: 'var(--mono)', color: 'var(--muted)', fontSize: 11 }}>{u.structure}</td>
+                  <td style={{ padding: '12px 16px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', color: 'var(--muted)', whiteSpace: 'nowrap' }}>{u.ttl}</td>
+                  <td style={{ padding: '12px 16px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', color: 'var(--text-2)' }}>{u.why}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   );
 }

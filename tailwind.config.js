@@ -5,15 +5,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['Fira Code', 'monospace'],
+        display: ['Georgia', 'Times New Roman', 'serif'],
+        mono: ['"Courier New"', 'Courier', 'monospace'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         gold: {
-          DEFAULT: '#00ff15',
-          muted:   '#2fff00',
-          dim:     '#1ae603',
-          dark:    '#37ff0f',
+          DEFAULT: '#C8A951',
+          muted:   '#a88a3a',
+          dim:     'rgba(200,169,81,0.12)',
+          dark:    '#0e0d0b',
         },
         dark: {
           base:     '#131313',

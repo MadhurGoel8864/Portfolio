@@ -1,88 +1,50 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
-import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
 import { ACHIEVEMENTS } from '../../constants/global';
-import { COLORS, withAlpha } from '../../constants/theme';
 
 function AchievementCard({ ach, index }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <motion.div
-      variants={itemVariants}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className="relative rounded-2xl overflow-hidden cursor-default"
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }} transition={{ delay: index * 0.05 }}
+      onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}
+      className="card"
       style={{
-        background: 'var(--bg-surface)',
-        border:     `1px solid ${hovered ? withAlpha(ach.color, 0.40) : withAlpha(ach.color, 0.14)}`,
-        boxShadow:  hovered ? `0 20px 50px rgba(0,0,0,0.18), 0 0 40px ${withAlpha(ach.color, 0.10)}` : '0 4px 18px rgba(0,0,0,0.08)',
-        transition: 'all 0.3s ease',
+        borderTop: `2px solid ${ach.color}66`,
+        display: 'flex', flexDirection: 'column',
+        boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.25), 0 0 40px ${ach.color}14` : 'none',
+        transform: hovered ? 'translateY(-4px)' : 'none',
+        transition: 'all 0.25s',
       }}
     >
-      {/* Border beam on hover */}
-      {hovered && (
-        <div className="absolute inset-0 pointer-events-none rounded-2xl"
-          style={{
-            padding: '1px',
-            background: `conic-gradient(from var(--angle, 0deg), transparent 55%, ${withAlpha(ach.color, 0.7)} 70%, transparent 85%)`,
-            animation: 'beam-rotate 2.8s linear infinite',
-            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-          }} />
-      )}
-
-      {/* Hover glow */}
-      <div className="absolute inset-0 pointer-events-none transition-opacity duration-400"
-        style={{ opacity: hovered ? 1 : 0, background: `radial-gradient(circle at 50% 0%, ${withAlpha(ach.color, 0.10)}, transparent 65%)` }} />
-
-      {/* Top shine */}
-      <div className="h-[1px] w-full"
-        style={{ background: `linear-gradient(90deg, transparent, ${withAlpha(ach.color, hovered ? 0.65 : 0.25)}, transparent)`, transition: 'all 0.3s' }} />
-
-      <div className="p-5">
-        {/* Icon */}
-        <motion.div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl mb-3"
-          style={{ background: withAlpha(ach.color, 0.08), border: `1px solid ${withAlpha(ach.color, 0.22)}`,
-            boxShadow: hovered ? `0 0 18px ${withAlpha(ach.color, 0.22)}` : 'none', transition: 'box-shadow 0.3s' }}
-          animate={hovered ? { scale: 1.12, rotate: [0, -6, 6, 0] } : { scale: 1, rotate: 0 }}
-          transition={{ duration: 0.35 }}
-        >
-          {ach.emoji}
-        </motion.div>
-
-        <div className="font-mono text-[10px] tracking-widest uppercase mb-1.5" style={{ color: withAlpha(ach.color, 0.7) }}>
-          {ach.category}
-        </div>
-
-        <h3 className="font-bold text-sm mb-2 leading-snug" style={{ color: 'var(--text-primary)' }}>
-          {ach.title}
-        </h3>
-
-        <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
-          {ach.description}
-        </p>
-
-        <div className="flex items-center justify-between pt-3"
-          style={{ borderTop: `1px solid ${withAlpha(ach.color, 0.10)}` }}>
-          <span className="font-mono text-[10px] px-2 py-0.5 rounded-md"
-            style={{ color: ach.color, background: withAlpha(ach.color, 0.08), border: `1px solid ${withAlpha(ach.color, 0.20)}` }}>
-            {ach.year}
-          </span>
-          {ach.link && (
-            <a href={ach.link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 text-xs font-semibold hover:opacity-75 transition-opacity"
-              style={{ color: ach.color }}>
-              View <ExternalLink size={10} />
-            </a>
-          )}
-        </div>
+      <div style={{
+        width: 46, height: 46, borderRadius: 14,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 20, marginBottom: 12,
+        background: `${ach.color}14`, border: `1px solid ${ach.color}33`,
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        transform: hovered ? 'scale(1.12) rotate(-4deg)' : 'none',
+        boxShadow: hovered ? `0 0 18px ${ach.color}38` : 'none',
+      }}>
+        {ach.emoji}
+      </div>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6, color: `${ach.color}bb` }}>{ach.category}</div>
+      <h3 style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 700, color: 'var(--text)', marginBottom: 8, lineHeight: 1.3 }}>{ach.title}</h3>
+      <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 11, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 14, flex: 1 }}>{ach.description}</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 10, padding: '3px 8px', borderRadius: 4, color: ach.color, background: `${ach.color}14`, border: `1px solid ${ach.color}33` }}>{ach.year}</span>
+        {ach.link && (
+          <a href={ach.link} target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 600, color: ach.color, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.7'; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}>
+            View <ExternalLink size={10} />
+          </a>
+        )}
       </div>
     </motion.div>
   );
@@ -90,17 +52,11 @@ function AchievementCard({ ach, index }) {
 
 export function Achievements() {
   return (
-    <SectionWrapper id="achievements">
-      <SectionTitle
-        label="Recognition"
-        title="Achievements"
-        subtitle="Competitive programming, research, and professional milestones."
-      />
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {ACHIEVEMENTS.map((ach, i) => (
-          <AchievementCard key={ach.id} ach={ach} index={i} />
-        ))}
+    <section id="achievements" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
+      <SectionTitle label="Recognition" title="Achievements" subtitle="Competitive programming, research, and professional milestones." />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }} className="ach-grid-responsive">
+        {ACHIEVEMENTS.map((ach, i) => <AchievementCard key={ach.id} ach={ach} index={i} />)}
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

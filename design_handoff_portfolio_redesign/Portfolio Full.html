@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Madhur Goel — Backend Engineer</title>
+<link rel="stylesheet" href="portfolio-styles.css" />
+<style id="font-overrides">
+  /* ── Georgia display + Courier mono, clean sans for body ── */
+  :root {
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  /* Body prose — readable sans, not mono */
+  .hero-tagline, .sec-subtitle, .about-bio,
+  .bullet-list li, .exp-bullets li,
+  .arch-desc, .cap-detail, .ach-desc,
+  .rt-desc, .eng-what, .eng-decision span,
+  .fact-val, p, td, li { font-family: var(--sans) !important; font-size: inherit; }
+
+  /* Headings → Georgia */
+  .hero-name-first, .hero-name-last,
+  .sec-title, .cap-title, .ach-title,
+  .arch-layer-name, .exp-role, .rt-name,
+  .accordion-title, .edu-gpa,
+  h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif !important; }
+
+  /* Keep mono only for true code/labels */
+  .hero-api-badge, .api-method, .api-path, .api-ok,
+  .role-line, .role-text,
+  .sec-eyebrow span, .sec-eyebrow,
+  .chip, .chip-gold, .chip-indigo, .chip-green,
+  .stat-val, .stat-label,
+  .uptime-bar, .uptime-val,
+  .nav-link, .nav-logo, .nav-status,
+  .tc-head, .tc-k, .tc-v,
+  .bullet-section-head, .col-head-label,
+  .boot-line, #boot,
+  .arch-layer-tech, .flow-label,
+  .ach-cat, .ach-year, .ach-link,
+  .eng-sub-head, .eng-decision-label,
+  .exp-type, .exp-company, .exp-meta,
+  .accordion-label, .accordion-sub,
+  .live-badge, .fact-label,
+  .status-pill, .section-divider-label,
+  th, .orbit-tag, .terminal-card, .terminal-card-2 {
+    font-family: 'Courier New', Courier, monospace !important;
+  }
+
+  /* Scale Georgia display text — it reads slightly smaller than Syne */
+  .hero-name-first, .hero-name-last { letter-spacing: -0.01em; }
+  .sec-title { letter-spacing: -0.015em; }
+
+  /* Body text size bump for sans readability */
+  .hero-tagline { font-size: 14px; line-height: 1.75; }
+  .cap-detail, .arch-desc, .rt-desc { font-size: 12px; line-height: 1.75; }
+  .bullet-list li, .exp-bullets li { font-size: 13px; line-height: 1.7; }
+  .ach-desc { font-size: 12px; line-height: 1.7; }
+  .eng-what { font-size: 13px; line-height: 1.75; }
+</style>
+<style>
+/* ── HERO SPECIFIC ─────────────────────────────────── */
+#hero-section {
+  min-height: 100vh; display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center; gap: 4vw;
+  padding-top: 100px; padding-bottom: 60px;
+  max-width: 1280px; margin: 0 auto; padding-left: 5vw; padding-right: 5vw;
+}
+.hero-api-badge {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+}
+.api-method { color: var(--green); font-weight: 700; }
+.api-path   { color: var(--gold); }
+.api-ok     { color: var(--green); }
+.status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 99px;
+  background: var(--green-dim); border: 1px solid rgba(61,220,132,0.25);
+  color: var(--green); font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 28px; width: fit-content;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s infinite;
+}
+.hero-name-first {
+  font-family: var(--syne); font-size: clamp(44px, 5.5vw, 90px);
+  font-weight: 800; line-height: 1; color: var(--text);
+  display: block; letter-spacing: -0.02em;
+}
+.hero-name-last {
+  font-family: var(--syne); font-size: clamp(44px, 5.5vw, 90px);
+  font-weight: 800; line-height: 1; display: block;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--gold) 0%, #e8c96a 45%, var(--gold) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.role-line {
+  font-family: var(--mono); font-size: clamp(13px, 1.4vw, 16px);
+  color: var(--muted); margin: 16px 0 20px;
+  display: flex; align-items: center; gap: 6px; min-height: 24px;
+}
+.role-text { color: var(--text); font-weight: 500; }
+.cursor-blink {
+  display: inline-block; width: 2px; height: 1em;
+  background: var(--gold); animation: blink 0.85s step-end infinite; border-radius: 1px;
+}
+.hero-tagline {
+  font-family: var(--mono); font-size: clamp(11px, 1.1vw, 13px);
+  color: var(--muted); line-height: 1.8; max-width: 480px;
+  margin-bottom: 28px; border-left: 2px solid var(--border-md); padding-left: 14px;
+}
+.hero-tagline em { color: var(--gold); font-style: normal; }
+.skill-flow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 32px; }
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; margin-bottom: 32px;
+  padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.stat-val { font-family: var(--mono); font-size: clamp(18px, 2vw, 26px); font-weight: 700; color: var(--gold); display: block; }
+.stat-label { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; display: block; }
+.cta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.social-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.social-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); color: var(--gold); background: transparent;
+  text-decoration: none; transition: all 0.2s;
+}
+.social-btn:hover { background: var(--gold-dim); border-color: var(--border-md); transform: translateY(-2px); }
+.uptime-bar {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.uptime-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+.uptime-val { color: var(--green); }
+
+/* ORBIT */
+.orbit-system {
+  position: relative;
+  width: clamp(280px, 28vw, 420px);
+  height: clamp(280px, 28vw, 420px);
+  margin: auto;
+}
+.orbit-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(200,169,81,0.09);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: spin linear infinite;
+}
+.orbit-ring-1 { width: 84%; height: 84%; animation-duration: 18s; }
+.orbit-ring-2 { width: 108%; height: 108%; animation-duration: 28s; animation-direction: reverse; }
+.orbit-ring-3 { width: 130%; height: 130%; animation-duration: 44s; border-style: dashed; border-color: rgba(200,169,81,0.05); }
+.orbit-node { position: absolute; top: 50%; left: 50%; }
+.orbit-tag {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  padding: 4px 10px; border-radius: 4px;
+  background: rgba(14,13,11,0.88); border: 1px solid var(--border-md);
+  color: var(--gold); white-space: nowrap; backdrop-filter: blur(8px); pointer-events: none;
+}
+.photo-wrap {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: clamp(120px, 12vw, 175px); height: clamp(120px, 12vw, 175px);
+  border-radius: 50%; z-index: 5;
+}
+.photo-glow {
+  position: absolute; inset: -18px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,169,81,0.22) 0%, transparent 70%);
+  animation: glowPulse 3s ease-in-out infinite; z-index: -1;
+}
+.photo-wrap img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  border: 2px solid rgba(200,169,81,0.4); display: block;
+}
+.photo-ring {
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 1px solid rgba(200,169,81,0.28);
+  animation: spinRaw 8s linear infinite;
+}
+.photo-ring::after {
+  content: ''; position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 8px var(--gold);
+}
+.terminal-card {
+  position: absolute; bottom: -4%; right: -10%;
+  width: clamp(160px,15vw,220px);
+  background: rgba(14,13,11,0.92); border: 1px solid rgba(200,169,81,0.2);
+  border-radius: 10px; padding: 14px; backdrop-filter: blur(12px);
+  font-family: var(--mono); font-size: 10px; z-index: 10;
+  animation: floatA 4s ease-in-out infinite;
+}
+.terminal-card-2 {
+  position: absolute; top: -2%; left: -10%;
+  width: clamp(140px,13vw,195px);
+  background: rgba(14,13,11,0.92); border: 1px solid rgba(129,140,248,0.22);
+  border-radius: 10px; padding: 14px; backdrop-filter: blur(12px);
+  font-family: var(--mono); font-size: 10px; z-index: 10;
+  animation: floatB 5s ease-in-out infinite;
+}
+.tc-head { color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.tc-row { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 5px; }
+.tc-k { color: var(--muted); }
+.tc-v { color: var(--text); font-weight: 500; }
+.tc-gold { color: var(--gold); }
+.tc-green { color: var(--green); }
+.tc-indigo { color: var(--indigo); }
+
+@media (max-width: 900px) {
+  #hero-section { grid-template-columns: 1fr; padding-top: 90px; }
+  .hero-right { order: -1; }
+  .terminal-card, .terminal-card-2 { display: none; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+}
+
+/* ── ABOUT ─────────────────────────────────────────── */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.col-head { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+.col-head-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.col-head-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.exp-card { margin-bottom: 16px; }
+.exp-type { font-size: 9px; padding: 2px 8px; border-radius: 99px; font-family: var(--mono); font-weight: 600; letter-spacing: 0.04em; }
+.exp-role { font-family: var(--syne); font-size: 15px; font-weight: 700; color: var(--text); margin: 6px 0 2px; }
+.exp-company { font-family: var(--mono); font-size: 12px; color: var(--indigo); margin-bottom: 4px; }
+.exp-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+.exp-bullets { list-style: none; }
+.exp-bullets li { font-size: 12px; color: var(--text-2); padding: 3px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+.exp-bullets li::before { content: '▸'; color: var(--indigo); flex-shrink: 0; margin-top: 1px; font-size: 10px; }
+.edu-gpa { font-family: var(--syne); font-size: 20px; font-weight: 800; color: var(--gold); }
+
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+/* ── DEVDUAL OVERVIEW ──────────────────────────────── */
+.devdual-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+.bullet-section-head { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 10px; margin-top: 20px; }
+.bullet-list { list-style: none; }
+.bullet-list li { font-size: 13px; color: var(--text-2); display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; line-height: 1.6; }
+.bullet-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(200,169,81,0.5); flex-shrink: 0; margin-top: 7px; }
+.system-facts-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; position: relative; overflow: hidden; }
+.live-badge {
+  position: absolute; top: 16px; right: 16px;
+  font-family: var(--mono); font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--green); border: 1px solid rgba(61,220,132,0.25);
+  background: var(--green-dim); padding: 4px 10px; border-radius: 99px;
+  display: flex; align-items: center; gap: 5px;
+}
+.fact-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(200,169,81,0.07); }
+.fact-row:last-child { border-bottom: none; }
+.fact-label { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 100px; }
+.fact-val { font-family: var(--mono); font-size: 12px; color: var(--text); font-weight: 500; }
+@media (max-width: 860px) { .devdual-grid { grid-template-columns: 1fr; } }
+
+/* ── CAPABILITIES ──────────────────────────────────── */
+.cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cap-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(200,169,81,0.07); border: 1px solid var(--border-md); margin-bottom: 14px; }
+.cap-title { font-family: var(--syne); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+.cap-detail { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; flex: 1; }
+.cap-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+@media (max-width: 900px) { .cap-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .cap-grid { grid-template-columns: 1fr; } }
+
+/* ── ARCHITECTURE ──────────────────────────────────── */
+.arch-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.arch-layer-name { font-family: var(--syne); font-size: 14px; font-weight: 700; color: var(--text); }
+.arch-layer-tech { font-family: var(--mono); font-size: 10px; color: var(--gold); background: var(--gold-dim); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+.arch-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; margin: 12px 0; }
+.arch-points li { font-family: var(--mono); font-size: 11px; color: var(--text-2); display: flex; gap: 8px; margin-bottom: 6px; line-height: 1.5; }
+.arch-points li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+.request-flow {
+  margin-top: 32px; padding: 20px 24px; border-radius: 14px;
+  background: var(--bg2); border: 1px solid var(--border);
+  font-family: var(--mono); font-size: 11px; overflow-x: auto;
+}
+.flow-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(200,169,81,0.6); margin-bottom: 12px; }
+.flow-nodes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.flow-node { padding: 5px 12px; border-radius: 6px; background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border-md); white-space: nowrap; }
+.flow-arrow { color: rgba(200,169,81,0.35); font-size: 14px; }
+.flow-sep { color: rgba(200,169,81,0.25); margin: 0 4px; }
+@media (max-width: 900px) { .arch-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) { .arch-grid { grid-template-columns: 1fr; } }
+
+/* ── ENGINEERING (accordion) ───────────────────────── */
+.eng-sub-head { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(200,169,81,0.6); margin-bottom: 8px; margin-top: 0; }
+.eng-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 16px 0; }
+.eng-what { font-size: 13px; color: var(--text-2); line-height: 1.7; margin-bottom: 16px; padding-top: 16px; }
+.eng-decision { background: rgba(200,169,81,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 12px; line-height: 1.6; }
+.eng-decision-label { color: var(--gold); font-weight: 700; font-family: var(--mono); margin-right: 6px; }
+@media (max-width: 600px) { .eng-two-col { grid-template-columns: 1fr; } }
+
+/* ── REALTIME / CACHING ────────────────────────────── */
+.rt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.rt-name { font-family: var(--syne); font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+.rt-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; }
+.section-divider {
+  display: flex; align-items: center; gap: 16px; margin: 60px 0 40px;
+}
+.section-divider-line { flex: 1; height: 1px; background: var(--border); }
+.section-divider-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); padding: 6px 14px; border: 1px solid var(--border); border-radius: 99px; white-space: nowrap; }
+@media (max-width: 600px) { .rt-grid { grid-template-columns: 1fr; } }
+
+/* ── ACHIEVEMENTS ──────────────────────────────────── */
+.ach-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.ach-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; transition: transform 0.2s, box-shadow 0.2s; }
+.ach-cat { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.ach-title { font-family: var(--syne); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+.ach-desc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; flex: 1; }
+.ach-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); }
+.ach-year { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; }
+.ach-link { font-family: var(--mono); font-size: 10px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
+.ach-link:hover { opacity: 0.7; }
+.card:hover .ach-icon { transform: scale(1.12) rotate(-4deg); }
+@media (max-width: 900px) { .ach-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .ach-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ── CURSOR ───────────────────────────────── -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-trail"></div>
+<div id="cursor-label"></div>
+
+<!-- ── BOOT SEQUENCE ────────────────────────── -->
+<div id="boot"><div id="boot-lines"></div></div>
+
+<!-- ── BACKGROUND ───────────────────────────── -->
+<canvas id="particle-canvas"></canvas>
+<div id="scanlines"></div>
+
+<!-- ══════════════════════════════════════════
+     NAV
+══════════════════════════════════════════ -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-box">M</div>
+    Madhur
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#hero-section">Home</a>
+    <a class="nav-link" href="#about">About</a>
+    <a class="nav-link" href="#devdual">DevDual</a>
+    <a class="nav-link" href="#capabilities">Capabilities</a>
+    <a class="nav-link" href="#architecture">Architecture</a>
+    <a class="nav-link" href="#engineering">Engineering</a>
+    <a class="nav-link" href="#achievements">Achievements</a>
+  </div>
+  <div class="nav-status">
+    <span class="nav-status-dot"></span>
+    Open to work
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<div id="hero-section">
+  <!-- LEFT -->
+  <div class="hero-left">
+    <div class="hero-api-badge">
+      <span class="api-method">GET</span>
+      <span class="api-path">/api/engineer/madhur-goel</span>
+      <span class="api-ok">200 OK</span>
+    </div>
+
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      Open to backend engineering roles
+    </div>
+
+    <span class="hero-name-first">Madhur</span>
+    <span class="hero-name-last">Goel</span>
+
+    <div class="role-line">
+      <span style="color:var(--muted)">→&nbsp;</span>
+      <span class="role-text" id="role-text"></span>
+      <span class="cursor-blink"></span>
+    </div>
+
+    <p class="hero-tagline">
+      I design the infrastructure that makes products work —
+      <em>auth systems</em>, <em>real-time sync</em>, and <em>execution pipelines</em>.
+    </p>
+
+    <div class="skill-flow">
+      <span class="chip chip-gold">FastAPI</span>
+      <span class="chip chip-gold">PostgreSQL</span>
+      <span class="chip chip-gold">Redis</span>
+      <span class="chip chip-gold">WebSockets</span>
+      <span class="chip chip-gold">SQLAlchemy</span>
+      <span class="chip chip-gold">Judge0</span>
+      <span class="chip chip-gold">GCP</span>
+      <span class="chip chip-gold">Python</span>
+      <span class="chip chip-gold">JWT / OAuth</span>
+      <span class="chip chip-gold">System Design</span>
+    </div>
+
+    <div class="stats-row">
+      <div style="text-align:center">
+        <span class="stat-val">1+</span>
+        <span class="stat-label">Years Exp.</span>
+      </div>
+      <div style="text-align:center">
+        <span class="stat-val" id="s2">—</span>
+        <span class="stat-label">DSA Solved</span>
+      </div>
+      <div style="text-align:center">
+        <span class="stat-val" id="s3">—</span>
+        <span class="stat-label">LC Rating</span>
+      </div>
+      <div style="text-align:center">
+        <span class="stat-val">1</span>
+        <span class="stat-label">AWS Cert.</span>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn-primary" href="/resume.pdf" download>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 18 15 15"/></svg>
+        View Resume
+      </a>
+      <a class="btn-ghost" href="https://devduel.site" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        DevDual Live →
+      </a>
+    </div>
+
+    <div class="social-row">
+      <a class="social-btn" href="https://github.com/MadhurGoel8864" target="_blank" title="GitHub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      </a>
+      <a class="social-btn" href="https://www.linkedin.com/in/madhur-goel-mg" target="_blank" title="LinkedIn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <div style="width:1px;height:18px;background:var(--border)"></div>
+      <span class="uptime-bar">
+        <span class="uptime-dot"></span>
+        uptime: <span class="uptime-val" id="uptime-val">0s</span>
+        &nbsp;·&nbsp; madhur12a16072@gmail.com
+      </span>
+    </div>
+  </div>
+
+  <!-- RIGHT — orbit -->
+  <div class="hero-right">
+    <div class="orbit-system" id="orbit-system">
+      <div class="orbit-ring orbit-ring-1"></div>
+      <div class="orbit-ring orbit-ring-2"></div>
+      <div class="orbit-ring orbit-ring-3"></div>
+
+      <div class="photo-wrap" id="photo-wrap">
+        <div class="photo-glow"></div>
+        <div class="photo-ring"></div>
+        <img src="profile.jpg" alt="Madhur Goel" />
+      </div>
+
+      <div class="terminal-card">
+        <div class="tc-head">// system.status</div>
+        <div class="tc-row"><span class="tc-k">role</span><span class="tc-v tc-gold">backend_eng</span></div>
+        <div class="tc-row"><span class="tc-k">status</span><span class="tc-v tc-green">● available</span></div>
+        <div class="tc-row"><span class="tc-k">p99_latency</span><span class="tc-v tc-green">&lt;50ms</span></div>
+        <div class="tc-row"><span class="tc-k">stack</span><span class="tc-v">FastAPI+PG</span></div>
+      </div>
+      <div class="terminal-card-2">
+        <div class="tc-head">// last_deploy</div>
+        <div class="tc-row"><span class="tc-k">project</span><span class="tc-v tc-gold">DevDual</span></div>
+        <div class="tc-row"><span class="tc-k">branch</span><span class="tc-v tc-indigo">main ✓</span></div>
+        <div class="tc-row"><span class="tc-k">infra</span><span class="tc-v tc-green">GCP live</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ABOUT
+══════════════════════════════════════════ -->
+<section id="about" class="alt-bg">
+  <div class="sec-eyebrow"><span>Background</span></div>
+  <h2 class="sec-title">About Me</h2>
+  <div class="sec-underline"></div>
+
+  <p style="font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.8;max-width:680px;margin-bottom:24px;">
+    Backend engineer focused on real-time system design, API architecture, and distributed state management.
+    I care about how systems behave under concurrency, how components fail, and what breaks first.
+    I design for resilience, observability, and predictable performance at scale.
+  </p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px;">
+    <span style="font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Gurgaon, Haryana, India
+    </span>
+    <a class="btn-primary" href="/resume.pdf" download style="font-size:11px;padding:8px 16px;">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Resume
+    </a>
+  </div>
+
+  <div class="about-grid">
+    <!-- Education -->
+    <div>
+      <div class="col-head">
+        <div class="col-head-icon" style="background:var(--gold-dim);border:1px solid var(--border-md);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <span class="col-head-label">Education</span>
+      </div>
+
+      <div class="card card-glow-gold" style="margin-bottom:14px;">
+        <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-family:var(--syne);font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">B.Tech — Computer Science Engineering (AI & ML)</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--gold);margin-bottom:3px;">Ajay Kumar Garg Engineering College</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:12px;">AKTU · 2021 – 2025</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span class="chip chip-gold">AI & ML</span>
+              <span class="chip chip-gold">Backend Dev</span>
+              <span class="chip chip-gold">Competitive Programming</span>
+            </div>
+          </div>
+          <div class="edu-gpa">8.4</div>
+        </div>
+      </div>
+
+      <div class="card card-glow-gold">
+        <div style="display:flex;align-items:start;justify-content:space-between;gap:12px;">
+          <div>
+            <div style="font-family:var(--syne);font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Senior Secondary (Class XII)</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--gold);margin-bottom:3px;">Delhi Public School</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:12px;">CBSE · 2019 – 2021</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px;">
+              <span class="chip chip-gold">Physics</span>
+              <span class="chip chip-gold">Maths</span>
+              <span class="chip chip-gold">CS</span>
+            </div>
+          </div>
+          <div class="edu-gpa">93%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div>
+      <div class="col-head">
+        <div class="col-head-icon" style="background:var(--indigo-dim);border:1px solid rgba(129,140,248,0.22);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <span class="col-head-label">Work Experience</span>
+      </div>
+
+      <!-- Unthinkable -->
+      <div class="card card-glow-indigo exp-card" style="border-top:2px solid var(--indigo);">
+        <div style="display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:10px;">
+          <div>
+            <span class="exp-type chip chip-indigo">Full-time · Current</span>
+            <div class="exp-role">Software Engineer</div>
+            <div class="exp-company">Unthinkable Solutions</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--indigo);">Jan 2025 – Present</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;">Gurgaon (Remote)</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed and shipped REST APIs with FastAPI for fintech client applications</li>
+          <li>Integrated OTP authentication and token management into existing auth flows</li>
+          <li>Optimized slow DB queries and reduced p99 response times on reporting endpoints</li>
+        </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <span class="chip chip-indigo">FastAPI</span><span class="chip chip-indigo">PostgreSQL</span><span class="chip chip-indigo">Redis</span><span class="chip chip-indigo">SQLAlchemy</span>
+        </div>
+      </div>
+
+      <!-- Dwayo -->
+      <div class="card exp-card" style="border-top:2px solid rgba(129,140,248,0.4);">
+        <div style="display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:10px;">
+          <div>
+            <span class="exp-type chip chip-indigo">Internship</span>
+            <div class="exp-role">AI Research Intern</div>
+            <div class="exp-company">Dwayo</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--indigo);">Jun – Aug 2024</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;">Remote</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Improved OCR accuracy by ~36% using ensemble error-correction on model outputs</li>
+          <li>Built preprocessing pipeline for scanned document normalization</li>
+        </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <span class="chip chip-indigo">Python</span><span class="chip chip-indigo">OpenCV</span><span class="chip chip-indigo">Tesseract</span>
+        </div>
+      </div>
+
+      <!-- Binge -->
+      <div class="card exp-card" style="border-top:2px solid rgba(129,140,248,0.2);">
+        <div style="display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:10px;">
+          <div>
+            <span class="exp-type chip chip-indigo">Internship</span>
+            <div class="exp-role">Data Analyst Intern</div>
+            <div class="exp-company">Binge & Bash</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--indigo);">Jan – Mar 2024</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;">Remote</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Reduced data pipeline processing time by ~45% through query restructuring and batching</li>
+          <li>Automated weekly business reports using Python, replacing manual Excel workflows</li>
+        </ul>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <span class="chip chip-indigo">Python</span><span class="chip chip-indigo">Pandas</span><span class="chip chip-indigo">SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DEVDUAL SYSTEM OVERVIEW
+══════════════════════════════════════════ -->
+<section id="devdual">
+  <div class="sec-eyebrow"><span>DevDual</span></div>
+  <h2 class="sec-title">System <span class="gold">Overview</span></h2>
+  <p class="sec-subtitle">Real-time competitive coding platform with auction-based problem allocation</p>
+
+  <div class="devdual-grid">
+    <div>
+      <div class="bullet-section-head">Problem Statement</div>
+      <ul class="bullet-list">
+        <li>Traditional contests test pure algorithms in isolation, lacking strategic depth.</li>
+        <li>DevDual introduces <strong style="color:var(--gold)">resource constraints</strong> bringing an economic twist.</li>
+        <li>Transforms coding into a high-stakes game where <strong style="color:var(--gold)">risk vs reward</strong> matters.</li>
+      </ul>
+
+      <div class="bullet-section-head">Core Mechanic</div>
+      <ul class="bullet-list">
+        <li><strong style="color:var(--text)">2-person teams</strong> split into a <strong style="color:var(--text)">Bidder vs Coder</strong>.</li>
+        <li>Bidder competes in a <strong style="color:var(--gold)">real-time auction</strong> with a fixed virtual purse.</li>
+        <li>Wins deplete currency instantly; points rely solely on Coder's success.</li>
+      </ul>
+
+      <div class="bullet-section-head">Strategy</div>
+      <ul class="bullet-list">
+        <li>Unused currency holds no value — teams must spend strategically.</li>
+        <li>Coordination between the Bidder's budget and Coder's skill is the key to winning.</li>
+      </ul>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;">
+        <a class="btn-primary" href="https://devduel.site" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View Live Demo
+        </a>
+        <a class="btn-ghost" href="https://devduel.site/api/docs" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Explore API (Swagger)
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="system-facts-card">
+        <div class="live-badge">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;display:inline-block;"></span>
+          Live on GCP
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(200,169,81,0.7);margin-bottom:20px;">System Facts</div>
+        <div class="fact-row"><span class="fact-label">Backend</span><span class="fact-val">FastAPI + PostgreSQL</span></div>
+        <div class="fact-row"><span class="fact-label">Real-time</span><span class="fact-val">Native WebSockets</span></div>
+        <div class="fact-row"><span class="fact-label">Execution</span><span class="fact-val">Self-hosted Judge0</span></div>
+        <div class="fact-row"><span class="fact-label">Infra</span><span class="fact-val">GCP VM</span></div>
+        <div class="fact-row"><span class="fact-label">Performance</span><span class="fact-val" style="color:var(--green);">&lt; 50ms p99 auction latency</span></div>
+        <div class="fact-row"><span class="fact-label">Dev time</span><span class="fact-val">3–4 months</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CAPABILITIES
+══════════════════════════════════════════ -->
+<section id="capabilities" class="alt-bg">
+  <div class="sec-eyebrow"><span>Capabilities</span></div>
+  <h2 class="sec-title">What I <span class="gold">Build</span></h2>
+  <p class="sec-subtitle">Not feature lists — engineering capabilities. Each one with tradeoffs considered.</p>
+
+  <div class="cap-grid" id="cap-grid"></div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ARCHITECTURE
+══════════════════════════════════════════ -->
+<section id="architecture">
+  <div class="sec-eyebrow"><span>Architecture</span></div>
+  <h2 class="sec-title">Architecture <span class="gold">Breakdown</span></h2>
+  <p class="sec-subtitle">Modular Monolithic backend — one domain, one router, one service, one DAO.</p>
+
+  <div class="arch-grid" id="arch-grid"></div>
+
+  <div class="request-flow">
+    <div class="flow-label">// Request Flow</div>
+    <div class="flow-nodes">
+      <span class="flow-node">Client</span><span class="flow-arrow">→</span>
+      <span class="flow-node">FastAPI Router</span><span class="flow-arrow">→</span>
+      <span class="flow-node">Service Layer</span><span class="flow-arrow">→</span>
+      <span class="flow-node">DAO</span><span class="flow-arrow">→</span>
+      <span class="flow-node">PostgreSQL</span>
+      <span class="flow-sep">|</span>
+      <span class="flow-node" style="border-color:rgba(61,220,132,0.3);color:var(--green);background:var(--green-dim);">Redis</span>
+      <span class="flow-sep">|</span>
+      <span class="flow-node" style="border-color:rgba(129,140,248,0.3);color:var(--indigo);background:var(--indigo-dim);">WebSocket</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node" style="border-color:rgba(248,113,113,0.3);color:var(--red);background:rgba(248,113,113,0.06);">Judge0</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ENGINEERING SYSTEMS
+══════════════════════════════════════════ -->
+<section id="engineering" class="alt-bg">
+  <div class="sec-eyebrow"><span>Engineering</span></div>
+  <h2 class="sec-title">Key Engineering <span class="gold">Systems</span></h2>
+  <p class="sec-subtitle">DevDual broken down by subsystem — what each does, why it's non-trivial, and what tradeoffs were made.</p>
+
+  <div id="accordion-container"></div>
+
+  <!-- Real-time Design -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <span class="section-divider-label">// Real-Time System Design</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <p style="font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:24px;">
+    Native FastAPI WebSockets. No Redis pub/sub, no external broker — direct in-memory connection management.
+    Works for single-instance deployment; horizontal scaling requires shared state.
+  </p>
+  <div class="rt-grid">
+    <div class="card"><div class="rt-name">ConnectionManager</div><div class="rt-desc">In-memory dict: auction_id → list[WebSocket]. On connect: add to room. On disconnect: remove from room. Bid broadcasts iterate the list.</div></div>
+    <div class="card"><div class="rt-name">Bid Event Flow</div><div class="rt-desc">Client sends bid via HTTP POST — not WebSocket. Validated + locked in DB → result broadcast to all WS connections in that room.</div></div>
+    <div class="card"><div class="rt-name">State on Reconnect</div><div class="rt-desc">On WS connect, server sends current auction snapshot from Redis (problem_id, current_bid, winner, time_remaining) before entering live stream.</div></div>
+    <div class="card"><div class="rt-name">Authentication</div><div class="rt-desc">JWT passed as query param on WS connect. Validated before connection accepted. Invalid token → connection rejected immediately.</div></div>
+  </div>
+
+  <!-- Caching -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <span class="section-divider-label">// Caching & State Strategy</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <p style="font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:24px;">
+    Redis is used for six distinct purposes — none of them are 'just caching for speed'. Each use case solves a correctness or operational problem that a relational DB is wrong for.
+  </p>
+  <div style="overflow-x:auto;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+    <table>
+      <thead><tr><th>Use Case</th><th>Structure</th><th>TTL</th><th>Why Redis — not DB</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--gold);font-weight:600;">OTP Storage</td><td>String — key: user:otp:{email}</td><td>5 minutes</td><td>OTPs are ephemeral. DB storage requires a cleanup cron. Redis TTL handles expiry natively.</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">JWT Blacklist</td><td>Set — value: token hash</td><td>Matches token expiry</td><td>Stateless JWT cannot be invalidated on logout. Redis provides revocation store checked on every request.</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">OAuth State</td><td>String — key: oauth:state:{id}</td><td>10 minutes</td><td>OAuth state prevents CSRF. Must be temporary and not persist to DB.</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">Team Invites</td><td>String — key: invite:{code}</td><td>24 hours</td><td>Invites expire without a cleanup job. Redis TTL eliminates need for cron.</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">Auction State</td><td>Hash — auction:{id}:state</td><td>Auction duration</td><td>Fast reads for WebSocket broadcast and reconnect sync. DB query per broadcast would spike.</td></tr>
+        <tr><td style="color:var(--gold);font-weight:600;">Problem Queue</td><td>List — auction:{id}:problems</td><td>Auction duration</td><td>LPOP atomically dequeues the next problem without a DB read + delete.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ACHIEVEMENTS
+══════════════════════════════════════════ -->
+<section id="achievements">
+  <div class="sec-eyebrow"><span>Recognition</span></div>
+  <h2 class="sec-title">Achievements</h2>
+  <p class="sec-subtitle">Competitive programming, research, and professional milestones.</p>
+
+  <div class="ach-grid" id="ach-grid"></div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div style="max-width:1280px;margin:0 auto;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-bottom:48px;">
+      <!-- Brand -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="nav-logo-box">M</div>
+          <span style="font-family:var(--syne);font-size:18px;font-weight:700;color:var(--text);">Madhur<span style="color:var(--gold)">.</span></span>
+        </div>
+        <p style="font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:16px;">
+          Backend Engineer.<br/>Building things that matter.
+        </p>
+        <div style="display:flex;gap:8px;">
+          <a class="social-btn" href="https://github.com/MadhurGoel8864" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a class="social-btn" href="https://www.linkedin.com/in/madhur-goel-mg" target="_blank">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a class="social-btn" href="mailto:madhur12a16072@gmail.com">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+      <!-- Nav -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:20px;">Navigation</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="#hero-section" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">Home</a></li>
+          <li><a href="#about" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">About</a></li>
+          <li><a href="#devdual" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">DevDual</a></li>
+          <li><a href="#capabilities" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">Capabilities</a></li>
+          <li><a href="#architecture" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">Architecture</a></li>
+          <li><a href="#engineering" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">Engineering</a></li>
+          <li><a href="#achievements" style="font-family:var(--mono);font-size:13px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">Achievements</a></li>
+        </ul>
+      </div>
+      <!-- Contact -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:20px;">Contact</div>
+        <div style="margin-bottom:14px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:4px;">Email</div>
+          <a href="mailto:madhur12a16072@gmail.com" style="font-family:var(--mono);font-size:12px;color:var(--text-2);text-decoration:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-2)'">madhur12a16072@gmail.com</a>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:4px;">Location</div>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--text-2);">Gurgaon, Haryana, India</span>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:6px;">Status</div>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block;"></span>
+            Open to opportunities
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin-bottom:24px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">© 2026 Madhur Goel. All rights reserved.</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">Built with ♥ — terminal aesthetic</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+const CAPABILITIES = [
+  { title: "Real-time event synchronization", detail: "WebSocket-based systems for concurrent state — bid events, connection lifecycle, room management — without a message broker.", tags: ["WebSockets","FastAPI","State Sync"] },
+  { title: "API architecture with separation of concerns", detail: "Modular service + DAO/repository pattern. Business logic in services, DB interaction in DAOs. Routes stay thin.", tags: ["FastAPI","DAO Pattern","SQLAlchemy"] },
+  { title: "Purpose-driven caching strategies", detail: "Redis used deliberately — OTP TTL storage, token blacklisting, OAuth state, invite codes, auction state coordination. Not just speed, but correctness.", tags: ["Redis","TTL","State Management"] },
+  { title: "Authentication & authorization systems", detail: "JWT with refresh rotation, OTP verification (Redis-backed TTL), OAuth state management, and role-based route middleware.", tags: ["JWT","OAuth","RBAC","OTP"] },
+  { title: "DB schema design under role constraints", detail: "Normalized schemas where the same user holds different roles across different teams and contests. Enforced at the service layer.", tags: ["PostgreSQL","SQLAlchemy","Schema Design"] },
+  { title: "Code execution pipelines", detail: "Submission → self-hosted Judge0 on GCP → verdict polling → DB update. Language-agnostic, sandboxed, with partial scoring.", tags: ["Judge0","GCP","Async Polling"] },
+  { title: "Concurrency and race condition handling", detail: "Serializing concurrent credit deductions using SELECT FOR UPDATE. Preventing double-bids in a fixed economy under real-time load.", tags: ["Concurrency","Row Locking","Transactions"] },
+  { title: "Contest lifecycle state machines", detail: "Validated state transitions (DRAFT → REGISTRATION_OPEN → ACTIVE → ENDED). Invariants enforced at the service layer, not the DB.", tags: ["State Machines","Lifecycle","Validation"] },
+];
+
+const CAP_ICONS = [
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>`,
+];
+
+const ARCHITECTURE = [
+  { name:"API Layer", tech:"FastAPI", desc:"Request routing, input validation via Pydantic, and dependency injection for auth. Rate limiting on auth-sensitive endpoints.", points:["Route handlers stay thin — zero business logic","Pydantic schemas enforce request/response contracts","JWT auth via FastAPI Depends() — one decorator per protected route","Per-IP rate limiting on /auth endpoints"] },
+  { name:"WebSocket Layer", tech:"Native FastAPI WS", desc:"Auction rooms managed as in-memory connection pools. Each connected client receives bid events in real-time via broadcast.", points:["ConnectionManager: auction_id → list[WebSocket]","Bid events broadcast to all clients in room","JWT authenticated via query param on connect","Reconnect receives state snapshot from Redis before live stream"] },
+  { name:"Service Layer", tech:"Python classes", desc:"All business logic lives here. Services coordinate between DAOs, enforce role constraints, validate state transitions, and interact with Redis.", points:["Stateless service classes — injected via dependency","Role and state validation before every mutation","Atomic operations using SQLAlchemy transactions","Redis interactions encapsulated within service methods"] },
+  { name:"DB Layer", tech:"PostgreSQL + SQLAlchemy", desc:"Normalized relational schema. DAO classes abstract all DB interactions — services never write raw SQL or ORM queries directly.", points:["DAO pattern: one DAO class per model","SELECT FOR UPDATE in auction credit deductions","Alembic migrations for schema versioning","Indexes on contest_id, team_id, user_id FK columns"] },
+  { name:"Cache Layer", tech:"Redis", desc:"Ephemeral, time-sensitive data that does not belong in the DB. Six distinct use cases — each solving a correctness or operational problem.", points:["OTP storage (String, 5-min TTL)","JWT blacklist (Set, TTL = access token expiry)","Auction current state (Hash — bid, bidder_id)","Auction problem queue (List, LPOP for next problem)"] },
+  { name:"Execution Layer", tech:"Judge0 on GCP VM", desc:"Self-hosted Judge0 handles sandboxed code execution. Submissions sent via HTTP, verdicts polled asynchronously in a background task.", points:["Supports Python, JS, TypeScript, C++, C, Java, Go, Rust","Background task polls every 1s until verdict is final","Verdict + stdout/stderr stored in DB per submission","Score = problem points on ACCEPTED verdict; 0 otherwise"] },
+];
+
+const ARCH_ICONS = [
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>`,
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+  `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+];
+
+const ENGINEERING = [
+  { label:"A", name:"Authentication System", what:"JWT-based auth with refresh token rotation, OTP verification, OAuth (Google), and Redis-backed token blacklisting.", challenges:["Stateless JWTs cannot be invalidated on logout — required a Redis blacklist","OTPs must expire without a cleanup job — TTL-based Redis storage eliminates the need for cron","OAuth state parameter must be temporary and tamper-resistant"], impl:["Access token (15-min) + Refresh token (7-day) issued on login/register","Logout adds the access token hash to a Redis Set with TTL matching expiry","Every authenticated request checks the blacklist before proceeding","OTP stored as key=user:otp:{email}, value=hashed_otp, TTL=5 minutes"], decision:"Redis blacklist over DB-based token store — revocation checks happen on every request. DB lookup at that frequency adds 5-10ms per request at scale." },
+  { label:"B", name:"Real-Time Auction Engine", what:"Live bidding where teams compete for problems using credits. Auctions flow through PENDING → ACTIVE → FINISHED states; bids broadcast in real-time to all connected clients via WebSocket.", challenges:["Simultaneous bids from different teams near auction close — only one can legitimately hold 'current highest' at timer expiry","Bids must be validated against the team's purse at submit time, but deduction must wait until the team actually wins","Reconnecting clients must receive current state — not re-enter mid-stream and miss events"], impl:["Bid handler: validate bid ≥ current_highest + 10 AND bid ≤ team_purse → SELECT FOR UPDATE on the auction state row → record bid → commit → broadcast","Current state stored in Redis Hash for fast WS reads","On reconnect: server sends Redis snapshot of current state before adding client to live stream","Auction close: lock auction row, debit winning team's purse by winning bid, set ProblemAssignment status=ASSIGNED"], decision:"Row-level lock on the auction row (not the team credit row) — the actual contention point is 'who is currently highest', not the purse. Deferring deduction until close matches the product rule." },
+  { label:"C", name:"Code Execution Pipeline", what:"Submission from Coder → sandboxed Judge0 execution → verdict polling → scoring update. Problem assignments flow ASSIGNED → SOLVED (on first ACCEPTED verdict) or ASSIGNED → FAILED.", challenges:["Judge0 execution is async — submission returns a token, not an immediate verdict","Multiple submissions per problem are allowed until ACCEPTED or contest ends; only ACCEPTED awards points","Self-hosted Judge0 on a shared GCP VM introduces latency variability"], impl:["Submission stored in DB with PENDING status on receipt","Background task polls Judge0 every 1s until status exits 'In Queue' or 'Processing'","Verdict + stdout/stderr stored per submission in DB","Scoring is binary: ACCEPTED flips assignment to SOLVED and awards the problem's full point value"], decision:"Polling over Judge0 webhooks — self-hosted infra has no stable public callback URL. Acceptable at current scale. Webhook + queue would replace this at higher traffic." },
+  { label:"D", name:"Team & Role Management", what:"2-person teams with strict role constraints — exactly one BIDDING and one CODING per team. Roles are team-scoped, not global. Team creator is auto-assigned BIDDING (captain).", challenges:["Same user may hold different roles across different teams — roles live on TeamMember, not on User","Team composition must lock after contest start — no mid-contest role changes","Invite system must expire without a background cleanup job"], impl:["TeamMember(team_id, user_id, role) with UNIQUE constraint on (team_id, user_id); max 2 rows per team","Invite codes stored in Redis with 24-hr TTL; accepted invite creates TeamMember row","Contest ACTIVE transition validates every registered team has both BIDDING and CODING roles filled"], decision:"Role enforcement in the service layer because roles are resource-scoped. Global middleware cannot resolve context-specific role without additional DB lookups per request." },
+  { label:"E", name:"Contest Lifecycle System", what:"End-to-end contest management — creation, problem linking, team registration, state transitions, leaderboard computation.", challenges:["State transitions must be validated — DRAFT cannot jump to ENDED","Leaderboard must remain consistent under concurrent submissions and match the tiebreaker rule","Organizers of one contest can participate as users in another — permissions are resource-scoped"], impl:["Status enum: DRAFT → REGISTRATION_OPEN → ACTIVE → ENDED","Each transition validated in service layer — invalid transitions return 400","On ACTIVE: every registered team seeded with a 1000-credit purse","Leaderboard: sum points from ACCEPTED submissions per team, ordered by points desc, ties broken by remaining purse credits"], decision:"State machine in the service layer rather than DB triggers — transitions are auditable, testable, and don't create invisible DB-level side effects." },
+];
+
+const ACHIEVEMENTS = [
+  { emoji:"⚔️", cat:"Competitive Programming", title:"LeetCode Knight", desc:"Reached Knight badge with a contest rating of 1880+. Solved 915+ problems across data structures, algorithms, and system design categories.", year:"2024", link:"https://leetcode.com/madhurgoel88/", color:"#F0A30A" },
+  { emoji:"🏆", cat:"Contest Winner", title:"Winner of BidBuzz", desc:"My team won the BidBuzz contest hosted in our college. I really liked the idea, which became the inspiration for creating DevDual.", year:"2024", link:null, color:"#1DA1F2" },
+  { emoji:"🧠", cat:"Research Publication", title:"Brain Tumor Detection — 98% Accuracy", desc:"Co-authored a published research paper on automated brain tumor classification using CNNs. Achieved 98.2% accuracy on the BraTS dataset.", year:"2023", link:null, color:"#E74C3C" },
+  { emoji:"☁️", cat:"Certification", title:"AWS Cloud Practitioner", desc:"Certified in AWS Cloud fundamentals — compute, storage, networking, IAM, and core service architecture.", year:"2023", link:null, color:"#818cf8" },
+  { emoji:"🚀", cat:"Project Milestone", title:"Shipped DevDual — Live on GCP", desc:"Designed and built a full-stack competitive platform solo from scratch — backend, real-time infra, and self-hosted execution on GCP in 3-4 months.", year:"2024", link:"https://devduel.site", color:"#C8A951" },
+  { emoji:"👨‍💻", cat:"Community", title:"DSA Mentor — 100+ Students", desc:"Mentored college peers and juniors in data structures and algorithms. Conducted weekly problem sessions and mock interviews.", year:"2023", link:null, color:"#27AE60" },
+];
+
+// ═══════════════════════════════════════════════════════
+// BOOT SEQUENCE
+// ═══════════════════════════════════════════════════════
+const BOOT_LINES = [
+  { t:'> initializing kernel...', d:0, c:'#3ddc84' },
+  { t:'> loading [auth] [websocket] [redis] [postgres]', d:80, c:'#3ddc84' },
+  { t:'> mounting /api/v1 ...', d:150, c:'#3ddc84' },
+  { t:'> judge0 executor: ONLINE', d:220, c:'#3ddc84' },
+  { t:'> redis: 10 workers connected', d:290, c:'#3ddc84' },
+  { t:'', d:360 },
+  { t:'> GET /api/engineer/madhur-goel HTTP/1.1', d:400, c:'#C8A951' },
+  { t:'  Accept: application/json', d:460, c:'#818cf8' },
+  { t:'', d:500 },
+  { t:'< HTTP/1.1 200 OK', d:540, c:'#3ddc84' },
+  { t:'{', d:580, c:'#f0ede6' },
+  { t:'  "name":     "Madhur Goel",', d:610, c:'#f0ede6' },
+  { t:'  "role":     "Backend Engineer",', d:640, c:'#f0ede6' },
+  { t:'  "location": "Gurgaon, India",', d:670, c:'#f0ede6' },
+  { t:'  "status":   "open_to_work",', d:700, c:'#3ddc84' },
+  { t:'  "lc_rating": 1880,', d:730, c:'#C8A951' },
+  { t:'  "live_project": "devduel.site"', d:760, c:'#C8A951' },
+  { t:'}', d:790, c:'#f0ede6' },
+  { t:'', d:820 },
+  { t:'> rendering portfolio...', d:860, c:'#3ddc84' },
+];
+
+(function initBoot() {
+  const container = document.getElementById('boot-lines');
+  let maxDelay = 0;
+  BOOT_LINES.forEach(({ t, d, c }) => {
+    maxDelay = Math.max(maxDelay, d);
+    const el = document.createElement('div');
+    el.className = 'boot-line';
+    el.textContent = t || '\u00a0';
+    el.style.color = c || '#3ddc84';
+    container.appendChild(el);
+    setTimeout(() => el.classList.add('show'), d);
+  });
+  setTimeout(() => {
+    const boot = document.getElementById('boot');
+    boot.classList.add('fade-out');
+    setTimeout(() => { boot.style.display = 'none'; initAll(); }, 650);
+  }, maxDelay + 380);
+})();
+
+// ═══════════════════════════════════════════════════════
+// PARTICLES
+// ═══════════════════════════════════════════════════════
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], mouse = { x: -9999, y: -9999 };
+
+function resizeCanvas() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W; this.y = Math.random() * H;
+    this.vx = (Math.random()-0.5)*0.35; this.vy = (Math.random()-0.5)*0.35;
+    this.r = Math.random()*1.4+0.4; this.alpha = Math.random()*0.4+0.08;
+  }
+  update() {
+    const dx = this.x-mouse.x, dy = this.y-mouse.y, d = Math.sqrt(dx*dx+dy*dy);
+    if(d<110){this.vx+=dx/d*0.12;this.vy+=dy/d*0.12;}
+    this.vx*=0.98;this.vy*=0.98;this.x+=this.vx;this.y+=this.vy;
+    if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,169,81,${this.alpha})`;ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = Array.from({length:Math.min(100,Math.floor(W*H/14000))},()=>new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<particles.length;i++){
+    particles[i].update();particles[i].draw();
+    for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<150){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(200,169,81,${(1-d/150)*0.15})`;ctx.lineWidth=0.7;ctx.stroke();}
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+
+// ═══════════════════════════════════════════════════════
+// CUSTOM CURSOR
+// ═══════════════════════════════════════════════════════
+const dot   = document.getElementById('cursor-dot');
+const ring  = document.getElementById('cursor-ring');
+const trail = document.getElementById('cursor-trail');
+const label = document.getElementById('cursor-label');
+let cx=0,cy=0,rx=0,ry=0,tx=0,ty=0;
+
+document.addEventListener('mousemove', e=>{
+  cx=e.clientX;cy=e.clientY;
+  dot.style.left=cx+'px';dot.style.top=cy+'px';
+  label.style.left=cx+'px';label.style.top=cy+'px';
+  // ring + trail lerp in raf
+  const hovered=e.target.closest('a,button,.btn-primary,.btn-ghost,.card,.social-btn,.chip,.accordion-header');
+  if(hovered){
+    document.body.classList.add('cursor-hover');
+    const lbl=hovered.getAttribute('data-cursor')||hovered.title||'';
+    label.textContent=lbl;
+  } else {
+    document.body.classList.remove('cursor-hover');
+    label.textContent='';
+  }
+});
+document.addEventListener('mousedown',()=>document.body.classList.add('cursor-click'));
+document.addEventListener('mouseup',()=>document.body.classList.remove('cursor-click'));
+
+function animateCursor(){
+  rx+=(cx-rx)*0.15;ry+=(cy-ry)*0.15;
+  tx+=(cx-tx)*0.08;ty+=(cy-ty)*0.08;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  trail.style.left=tx+'px';trail.style.top=ty+'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// ═══════════════════════════════════════════════════════
+// ORBIT
+// ═══════════════════════════════════════════════════════
+const ORBIT_TAGS = [
+  {label:'FastAPI',ring:0,angle:30*Math.PI/180},
+  {label:'Redis',ring:0,angle:150*Math.PI/180},
+  {label:'WebSockets',ring:0,angle:270*Math.PI/180},
+  {label:'PostgreSQL',ring:1,angle:60*Math.PI/180},
+  {label:'Judge0',ring:1,angle:180*Math.PI/180},
+  {label:'GCP',ring:1,angle:300*Math.PI/180},
+];
+const RING_RADII=[0.42,0.54];
+const RING_SPEED=[0.00055,-0.00038];
+
+function setupOrbit(){
+  const sys=document.getElementById('orbit-system');
+  ORBIT_TAGS.forEach(t=>{
+    const node=document.createElement('div');node.className='orbit-node';
+    const span=document.createElement('span');span.className='orbit-tag';span.textContent=t.label;
+    node.appendChild(span);sys.appendChild(node);t.el=node;
+  });
+}
+
+function animateOrbit(){
+  const sys=document.getElementById('orbit-system');
+  if(!sys){requestAnimationFrame(animateOrbit);return;}
+  const size=sys.offsetWidth;
+  ORBIT_TAGS.forEach(t=>{
+    t.angle+=RING_SPEED[t.ring]*16;
+    const r=RING_RADII[t.ring]*size;
+    const x=Math.cos(t.angle)*r,y=Math.sin(t.angle)*r;
+    t.el.style.transform=`translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+  });
+  requestAnimationFrame(animateOrbit);
+}
+
+// ═══════════════════════════════════════════════════════
+// PHOTO MAGNETIC
+// ═══════════════════════════════════════════════════════
+function photoMagnet(){
+  const photo=document.getElementById('photo-wrap');
+  window.addEventListener('mousemove',e=>{
+    const r=photo.getBoundingClientRect();
+    const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if(d<200){const p=(200-d)/200;photo.style.transform=`translate(-50%,-50%) translate(${dx*p*0.1}px,${dy*p*0.1}px)`;}
+    else photo.style.transform='translate(-50%,-50%)';
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// TYPEWRITER
+// ═══════════════════════════════════════════════════════
+const ROLES=['Backend Engineer','System Architect','API Designer','Real-time Specialist'];
+let roleIdx=0,charIdx=0,deleting=false;
+const roleEl=document.getElementById('role-text');
+function typeRole(){
+  const cur=ROLES[roleIdx];
+  if(!deleting){charIdx++;roleEl.textContent=cur.slice(0,charIdx);if(charIdx===cur.length){deleting=true;setTimeout(typeRole,2000);return;}setTimeout(typeRole,65);}
+  else{charIdx--;roleEl.textContent=cur.slice(0,charIdx);if(charIdx===0){deleting=false;roleIdx=(roleIdx+1)%ROLES.length;setTimeout(typeRole,300);return;}setTimeout(typeRole,32);}
+}
+
+// ═══════════════════════════════════════════════════════
+// UPTIME
+// ═══════════════════════════════════════════════════════
+const startTime=Date.now();
+function tickUptime(){
+  const s=Math.floor((Date.now()-startTime)/1000);
+  const m=Math.floor(s/60);
+  const el=document.getElementById('uptime-val');
+  if(el)el.textContent=m>0?`${m}m ${s%60}s`:`${s}s`;
+}
+
+// ═══════════════════════════════════════════════════════
+// COUNT-UP
+// ═══════════════════════════════════════════════════════
+function countUp(el,target,suffix='',dur=1200){
+  const n=parseFloat(target),t0=performance.now();
+  const tick=now=>{const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(e*n)+suffix;if(p<1)requestAnimationFrame(tick);};
+  requestAnimationFrame(tick);
+}
+
+// ═══════════════════════════════════════════════════════
+// BUILD CAPABILITIES
+// ═══════════════════════════════════════════════════════
+function buildCapabilities(){
+  const grid=document.getElementById('cap-grid');
+  CAPABILITIES.forEach((c,i)=>{
+    const div=document.createElement('div');
+    div.className='card card-glow-gold';
+    div.style.display='flex';div.style.flexDirection='column';
+    div.innerHTML=`
+      <div class="cap-icon">${CAP_ICONS[i]}</div>
+      <div class="cap-title">${c.title}</div>
+      <div class="cap-detail">${c.detail}</div>
+      <div class="cap-tags">${c.tags.map(t=>`<span class="chip chip-gold">${t}</span>`).join('')}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// BUILD ARCHITECTURE
+// ═══════════════════════════════════════════════════════
+function buildArchitecture(){
+  const grid=document.getElementById('arch-grid');
+  ARCHITECTURE.forEach((l,i)=>{
+    const div=document.createElement('div');div.className='card card-glow-gold';
+    div.style.display='flex';div.style.flexDirection='column';
+    div.innerHTML=`
+      <div style="display:flex;align-items:start;gap:12px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:9px;background:var(--gold-dim);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ARCH_ICONS[i]}</div>
+        <div>
+          <div class="arch-layer-name">${l.name}</div>
+          <span class="arch-layer-tech">${l.tech}</span>
+        </div>
+      </div>
+      <div class="arch-desc">${l.desc}</div>
+      <ul class="arch-points">${l.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// BUILD ACCORDION (Engineering)
+// ═══════════════════════════════════════════════════════
+function buildAccordion(){
+  const container=document.getElementById('accordion-container');
+  ENGINEERING.forEach((sys,i)=>{
+    const item=document.createElement('div');item.className='accordion-item';
+    item.innerHTML=`
+      <button class="accordion-header" onclick="toggleAccordion(${i})">
+        <div class="accordion-label">${sys.label}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="accordion-title">${sys.name}</div>
+          <div class="accordion-sub">${sys.what}</div>
+        </div>
+        <svg class="accordion-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="accordion-body" id="acc-body-${i}">
+        <div class="accordion-body-inner">
+          <p class="eng-what">${sys.what}</p>
+          <div class="eng-two-col">
+            <div>
+              <div class="eng-sub-head">Challenges</div>
+              <ul style="list-style:none;">${sys.challenges.map(c=>`<li style="font-family:var(--mono);font-size:11px;color:var(--text-2);display:flex;gap:8px;margin-bottom:6px;line-height:1.6;"><span style="color:rgba(200,169,81,0.5);flex-shrink:0;margin-top:1px;">▸</span>${c}</li>`).join('')}</ul>
+            </div>
+            <div>
+              <div class="eng-sub-head">Implementation</div>
+              <ul style="list-style:none;">${sys.impl.map(p=>`<li style="font-family:var(--mono);font-size:11px;color:var(--text-2);display:flex;gap:8px;margin-bottom:6px;line-height:1.6;"><span style="color:var(--gold);flex-shrink:0;margin-top:1px;">▸</span>${p}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="eng-decision"><span class="eng-decision-label">Decision:</span><span style="color:var(--text-2);font-family:var(--mono);font-size:11px;">${sys.decision}</span></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+let openAccIdx=-1;
+window.toggleAccordion=function(i){
+  const items=document.querySelectorAll('.accordion-item');
+  const bodies=document.querySelectorAll('.accordion-body');
+  if(openAccIdx===i){
+    items[i].classList.remove('open');
+    bodies[i].style.height='0';
+    openAccIdx=-1;
+  } else {
+    if(openAccIdx>=0){items[openAccIdx].classList.remove('open');bodies[openAccIdx].style.height='0';}
+    items[i].classList.add('open');
+    const inner=bodies[i].querySelector('.accordion-body-inner');
+    bodies[i].style.height=inner.offsetHeight+'px';
+    openAccIdx=i;
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+// BUILD ACHIEVEMENTS
+// ═══════════════════════════════════════════════════════
+function buildAchievements(){
+  const grid=document.getElementById('ach-grid');
+  ACHIEVEMENTS.forEach(a=>{
+    const div=document.createElement('div');div.className='card';
+    div.style.display='flex';div.style.flexDirection='column';
+    div.style.borderTopColor=a.color+'66';div.style.borderTopWidth='2px';
+    div.innerHTML=`
+      <div class="ach-icon" style="background:${a.color}14;border:1px solid ${a.color}33;">${a.emoji}</div>
+      <div class="ach-cat" style="color:${a.color}bb;">${a.cat}</div>
+      <div class="ach-title">${a.title}</div>
+      <div class="ach-desc">${a.desc}</div>
+      <div class="ach-foot">
+        <span class="ach-year" style="color:${a.color};background:${a.color}14;border:1px solid ${a.color}33;">${a.year}</span>
+        ${a.link?`<a class="ach-link" href="${a.link}" target="_blank" rel="noopener" style="color:${a.color};">View <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`:''}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// SCROLL ANIMATIONS (IntersectionObserver)
+// ═══════════════════════════════════════════════════════
+function initScrollAnims(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}
+    });
+  },{threshold:0.08});
+  document.querySelectorAll('.card,.fact-row,.bullet-list li,.exp-bullets li').forEach(el=>{
+    el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    obs.observe(el);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// NAV ACTIVE HIGHLIGHT
+// ═══════════════════════════════════════════════════════
+function initNav(){
+  const sections=document.querySelectorAll('section[id],div[id="hero-section"]');
+  const navLinks=document.querySelectorAll('.nav-link');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const match=[...navLinks].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(match)match.classList.add('active');
+      }
+    });
+  },{threshold:0.3,rootMargin:'-60px 0px 0px 0px'});
+  sections.forEach(s=>obs.observe(s));
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT ALL (called after boot)
+// ═══════════════════════════════════════════════════════
+function initAll(){
+  initParticles();
+  animateParticles();
+  setupOrbit();
+  requestAnimationFrame(animateOrbit);
+  photoMagnet();
+  typeRole();
+  setInterval(tickUptime,1000);
+  countUp(document.getElementById('s2'),915,'+');
+  countUp(document.getElementById('s3'),1880,'+');
+  buildCapabilities();
+  buildArchitecture();
+  buildAccordion();
+  buildAchievements();
+  initScrollAnims();
+  initNav();
+}
+</script>
+</body>
+</html>

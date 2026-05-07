@@ -1,144 +1,67 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, FileText, Database, Zap, Code, Server, Activity, Clock } from 'lucide-react';
-import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
-import { GlowCard } from '../ui/GlowCard';
 import { DEVDUAL } from '../../constants/global';
-import { COLORS, withAlpha } from '../../constants/theme';
-
-const ICON_MAP = {
-  database: Database,
-  zap: Zap,
-  code: Code,
-  server: Server,
-  activity: Activity,
-  clock: Clock
-};
 
 export function SystemOverview() {
-  const renderBullets = (items) => (
-    <ul className="space-y-3 mt-3 mb-6">
-      {items.map((item, i) => (
-        <li key={i} className="flex gap-3 items-start">
-          <div className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: withAlpha(COLORS.gold, 0.6) }} />
-          <span
-            className="text-sm leading-relaxed"
-            style={{ color: 'var(--text-secondary)' }}
-            dangerouslySetInnerHTML={{ __html: item }}
-          />
-        </li>
-      ))}
-    </ul>
-  );
-
   return (
-    <SectionWrapper id="system-overview">
-      <SectionTitle
-        label="DevDual"
-        title={
-          <span className="relative inline-block">
-            System Overview
-            <motion.div
-              className="absolute -bottom-1 left-0 right-0 h-[2px]"
-              style={{ background: `linear-gradient(90deg, ${COLORS.gold}, transparent)` }}
-              initial={{ scaleX: 0, originX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-            />
-          </span>
-        }
-        subtitle="Real-time competitive coding platform with auction-based problem allocation"
-      />
+    <section id="system-overview" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
+      <SectionTitle label="DevDual" title={<>System <span className="gold">Overview</span></>} subtitle="Real-time competitive coding platform with auction-based problem allocation" />
 
-      {/* Core description */}
-      <motion.div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 mb-14">
-        <div className="max-w-[540px]">
-          {/* Problem */}
-          <motion.div variants={itemVariants}>
-            <div className="font-mono text-xs tracking-widest font-bold uppercase" style={{ color: COLORS.gold }}>
-              Problem Statement
+      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 48, alignItems: 'start' }} className="devdual-grid-responsive">
+        <div>
+          {[
+            { head: 'Problem Statement', items: DEVDUAL.problemStatement },
+            { head: 'Core Mechanic', items: DEVDUAL.coreMechanic },
+            { head: 'Strategy', items: DEVDUAL.theStrategy },
+          ].map(({ head, items }) => (
+            <div key={head}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)', marginBottom: 10, marginTop: 20 }}>{head}</div>
+              <ul style={{ listStyle: 'none' }}>
+                {items.map((item, i) => (
+                  <li key={i} style={{ fontSize: 13, color: 'var(--text-2)', display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 8, lineHeight: 1.6, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif' }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(200,169,81,0.5)', flexShrink: 0, marginTop: 7, display: 'inline-block' }} />
+                    <span dangerouslySetInnerHTML={{ __html: item }} />
+                  </li>
+                ))}
+              </ul>
             </div>
-            {renderBullets(DEVDUAL.problemStatement)}
-          </motion.div>
+          ))}
 
-          {/* Core mechanic */}
-          <motion.div variants={itemVariants}>
-            <div className="font-mono text-xs tracking-widest font-bold uppercase" style={{ color: COLORS.gold }}>
-              Core Mechanic
-            </div>
-            {renderBullets(DEVDUAL.coreMechanic)}
-          </motion.div>
-
-          {/* The Strategy */}
-          <motion.div variants={itemVariants}>
-            <div className="font-mono text-xs tracking-widest font-bold uppercase" style={{ color: COLORS.gold }}>
-              Strategy
-            </div>
-            {renderBullets(DEVDUAL.theStrategy)}
-          </motion.div>
-
-          {/* Links */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-3 pt-2">
-            <a href={DEVDUAL.url} target="_blank" rel="noopener noreferrer">
-              <motion.div
-                whileHover={{ scale: 1.03, y: -2, boxShadow: `0 4px 12px ${withAlpha(COLORS.gold, 0.2)}` }}
-                whileTap={{ scale: 0.97 }}
-                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all"
-                style={{ background: `linear-gradient(135deg, ${COLORS.gold}, ${COLORS.goldMuted})`, color: COLORS.bgBase }}
-              >
-                <ExternalLink size={14} /> View Live Demo
-              </motion.div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 28 }}>
+            <a className="btn-primary" href={DEVDUAL.url} target="_blank" rel="noopener noreferrer">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              View Live Demo
             </a>
-            <a href={DEVDUAL.apiDocs} target="_blank" rel="noopener noreferrer">
-              <motion.div
-                whileHover={{ scale: 1.03, y: -2, background: withAlpha(COLORS.gold, 0.1) }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all"
-                style={{ border: `1px solid ${withAlpha(COLORS.gold, 0.35)}`, color: 'var(--gold)', background: withAlpha(COLORS.gold, 0.04) }}
-              >
-                <FileText size={14} /> Explore API (Swagger)
-              </motion.div>
+            <a className="btn-ghost" href={DEVDUAL.apiDocs} target="_blank" rel="noopener noreferrer">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Explore API (Swagger)
             </a>
-          </motion.div>
+          </div>
         </div>
 
-        {/* System stats card */}
-        <motion.div variants={itemVariants} whileHover={{ y: -4 }} className="transition-transform duration-300 h-fit">
-          <GlowCard className="p-7 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4">
-              <div className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border" style={{ color: COLORS.success, borderColor: withAlpha(COLORS.success, 0.3), background: withAlpha(COLORS.success, 0.05) }}>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5 mb-[1px]" />
-                Live on GCP
+        <div>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24, position: 'relative', overflow: 'hidden' }}>
+            <div style={{
+              position: 'absolute', top: 16, right: 16,
+              fontFamily: 'var(--mono)', fontSize: 9, fontWeight: 700,
+              textTransform: 'uppercase', letterSpacing: '0.08em',
+              color: '#3ddc84', border: '1px solid rgba(61,220,132,0.25)',
+              background: 'rgba(61,220,132,0.10)', padding: '4px 10px', borderRadius: 99,
+              display: 'flex', alignItems: 'center', gap: 5,
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3ddc84', animation: 'pulse 1.5s infinite', display: 'inline-block' }} />
+              Live on GCP
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(200,169,81,0.7)', marginBottom: 20 }}>System Facts</div>
+            {DEVDUAL.stats.map(({ label, value }) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid rgba(200,169,81,0.07)' }}>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)', minWidth: 100 }}>{label}</span>
+                <span style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 12, color: label === 'Performance' ? '#3ddc84' : 'var(--text)', fontWeight: 500 }}>{value}</span>
               </div>
-            </div>
-
-            <div className="font-mono text-xs tracking-widest font-bold uppercase mb-6" style={{ color: COLORS.gold }}>
-              System Facts
-            </div>
-
-            <div className="space-y-4">
-              {DEVDUAL.stats.map(({ label, value, icon, highlight }) => {
-                const Icon = ICON_MAP[icon] || Activity;
-                return (
-                  <div key={label} className="flex flex-col sm:flex-row sm:items-center py-2 gap-1 sm:gap-4 group" style={{ borderBottom: `1px solid ${withAlpha(COLORS.gold, 0.07)}` }}>
-                    <div className="flex items-center gap-2 min-w-[110px]">
-                      <Icon size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" style={{ color: COLORS.gold }} />
-                      <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{label}</span>
-                    </div>
-                    <span
-                      className={`text-sm ${highlight ? 'font-bold' : 'font-semibold'}`}
-                      style={{ color: highlight ? COLORS.gold : 'var(--text-primary)' }}
-                    >
-                      {value}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </GlowCard>
-        </motion.div>
-      </motion.div>
-    </SectionWrapper>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

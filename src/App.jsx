@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { CustomCursor } from './components/ui/CustomCursor';
+import { ParticleCanvas } from './components/ui/ParticleCanvas';
+import { BootSequence } from './components/ui/BootSequence';
 import { Navbar } from './components/sections/Navbar';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
@@ -9,17 +11,15 @@ import { EngineeringSystems } from './components/sections/EngineeringSystems';
 import { Achievements } from './components/sections/Achievements';
 import { Footer } from './components/sections/Footer';
 import { ScrollToTop } from './components/ui/ScrollToTop';
-import { Loader } from './components/ui/Loader';
-import { useTheme } from './hooks/useTheme';
 
 export default function App() {
-  useTheme();
-
   return (
     <>
-      <Loader />
+      <CustomCursor />
+      <BootSequence />
+      <ParticleCanvas />
       <Navbar />
-      <main>
+      <main style={{ position: 'relative', zIndex: 10 }}>
         <Hero />
         <About />
         <SystemOverview />

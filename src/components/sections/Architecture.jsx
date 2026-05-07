@@ -1,99 +1,62 @@
 import { motion } from 'framer-motion';
 import { Globe, Radio, Settings, Database, Cpu, Play } from 'lucide-react';
-import { SectionWrapper, itemVariants } from '../ui/SectionWrapper';
 import { SectionTitle } from '../ui/SectionTitle';
-import { GlowCard } from '../ui/GlowCard';
 import { ARCHITECTURE } from '../../constants/global';
-import { COLORS, withAlpha } from '../../constants/theme';
 
 const LAYER_ICONS = [Globe, Radio, Settings, Database, Cpu, Play];
 
 export function Architecture() {
   return (
-    <SectionWrapper id="architecture">
-      <SectionTitle
-        label="Architecture"
-        title="Architecture Breakdown"
-        subtitle="Modular Monolithic backend with modular internal structure — one domain, one router, one service, one DAO."
-      />
+    <section id="architecture" style={{ position: 'relative', zIndex: 10, padding: '100px 5vw', maxWidth: 1280, margin: '0 auto' }}>
+      <SectionTitle label="Architecture" title="Architecture Breakdown" subtitle="Modular Monolithic backend — one domain, one router, one service, one DAO." />
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }} className="arch-grid-responsive">
         {ARCHITECTURE.map((layer, i) => {
           const Icon = LAYER_ICONS[i];
           return (
-            <motion.div key={layer.name} variants={itemVariants}>
-              <GlowCard className="p-5 h-full flex flex-col">
-                {/* Header */}
-                <div className="flex items-start gap-3 mb-4">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: withAlpha(COLORS.gold, 0.08), border: `1px solid ${withAlpha(COLORS.gold, 0.22)}` }}
-                  >
-                    <Icon size={16} style={{ color: 'var(--gold)' }} />
-                  </div>
-                  <div>
-                    <div className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{layer.name}</div>
-                    <div
-                      className="text-[10px] font-mono mt-0.5 px-1.5 py-0.5 rounded-md inline-block"
-                      style={{ background: withAlpha(COLORS.gold, 0.07), color: 'var(--gold)', border: `1px solid ${withAlpha(COLORS.gold, 0.16)}` }}
-                    >
-                      {layer.tech}
-                    </div>
-                  </div>
+            <motion.div key={layer.name}
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
+              <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{layer.name}</div>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--gold)', background: 'var(--gold-dim)', border: '1px solid var(--border)', padding: '2px 8px', borderRadius: 4, marginTop: 4, display: 'inline-block' }}>{layer.tech}</span>
                 </div>
-
-                {/* Description */}
-                <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
-                  {layer.description}
-                </p>
-
-                {/* Points */}
-                <ul className="space-y-2 mt-auto">
-                  {layer.points.map((point, j) => (
-                    <motion.li
-                      key={j}
-                      initial={{ opacity: 0, x: -8 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.05 + j * 0.04 }}
-                      className="flex items-start gap-2 text-xs"
-                      style={{ color: 'var(--text-muted)' }}
-                    >
-                      <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: 'var(--gold)' }} />
-                      {point}
-                    </motion.li>
+                <p style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif', fontSize: 11, color: 'var(--muted)', lineHeight: 1.75, margin: '12px 0' }}>{layer.description}</p>
+                <ul style={{ listStyle: 'none', marginTop: 'auto' }}>
+                  {layer.points.map((p, j) => (
+                    <li key={j} style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--text-2)', display: 'flex', gap: 8, marginBottom: 6, lineHeight: 1.5 }}>
+                      <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--gold)', flexShrink: 0, marginTop: 6, display: 'inline-block' }} />
+                      {p}
+                    </li>
                   ))}
                 </ul>
-              </GlowCard>
+              </div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Architecture flow diagram — text-based */}
+      {/* Request flow */}
       <motion.div
-        variants={itemVariants}
-        className="mt-10 p-6 rounded-2xl font-mono text-xs overflow-x-auto"
-        style={{ background: 'var(--bg-deeper)', border: `1px solid ${withAlpha(COLORS.gold, 0.12)}` }}
-      >
-        <div className="mb-2 text-[10px] tracking-widest uppercase" style={{ color: withAlpha(COLORS.gold, 0.6) }}>Request Flow</div>
-        <div className="flex flex-wrap items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+        initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        style={{ marginTop: 32, padding: '20px 24px', borderRadius: 14, background: 'var(--bg2)', border: '1px solid var(--border)', fontFamily: 'var(--mono)', fontSize: 11, overflowX: 'auto' }}>
+        <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(200,169,81,0.6)', marginBottom: 12 }}>Request Flow</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
           {['Client', 'FastAPI Router', 'Service Layer', 'DAO', 'PostgreSQL'].map((node, i, arr) => (
-            <span key={node} className="flex items-center gap-2">
-              <span className="px-2 py-1 rounded-md" style={{ background: withAlpha(COLORS.gold, 0.08), color: 'var(--gold)', border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>
-                {node}
-              </span>
-              {i < arr.length - 1 && <span style={{ color: withAlpha(COLORS.gold, 0.4) }}>→</span>}
+            <span key={node} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ padding: '5px 12px', borderRadius: 6, background: 'var(--gold-dim)', color: 'var(--gold)', border: '1px solid var(--border-md)', whiteSpace: 'nowrap' }}>{node}</span>
+              {i < arr.length - 1 && <span style={{ color: 'rgba(200,169,81,0.35)', fontSize: 14 }}>→</span>}
             </span>
           ))}
-          <span style={{ color: withAlpha(COLORS.gold, 0.4) }}>|</span>
-          <span className="px-2 py-1 rounded-md" style={{ background: withAlpha(COLORS.gold, 0.08), color: 'var(--gold)', border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>Redis</span>
-          <span style={{ color: withAlpha(COLORS.gold, 0.4) }}>|</span>
-          <span className="px-2 py-1 rounded-md" style={{ background: withAlpha(COLORS.gold, 0.08), color: 'var(--gold)', border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>WebSocket</span>
-          <span style={{ color: withAlpha(COLORS.gold, 0.4) }}>→</span>
-          <span className="px-2 py-1 rounded-md" style={{ background: withAlpha(COLORS.gold, 0.08), color: 'var(--gold)', border: `1px solid ${withAlpha(COLORS.gold, 0.18)}` }}>Judge0</span>
+          <span style={{ color: 'rgba(200,169,81,0.25)', margin: '0 4px' }}>|</span>
+          <span style={{ padding: '5px 12px', borderRadius: 6, background: 'rgba(61,220,132,0.08)', color: '#3ddc84', border: '1px solid rgba(61,220,132,0.25)', whiteSpace: 'nowrap' }}>Redis</span>
+          <span style={{ color: 'rgba(200,169,81,0.25)', margin: '0 4px' }}>|</span>
+          <span style={{ padding: '5px 12px', borderRadius: 6, background: 'rgba(129,140,248,0.08)', color: 'var(--indigo)', border: '1px solid rgba(129,140,248,0.22)', whiteSpace: 'nowrap' }}>WebSocket</span>
+          <span style={{ color: 'rgba(200,169,81,0.35)', fontSize: 14 }}>→</span>
+          <span style={{ padding: '5px 12px', borderRadius: 6, background: 'rgba(248,113,113,0.08)', color: 'var(--red)', border: '1px solid rgba(248,113,113,0.22)', whiteSpace: 'nowrap' }}>Judge0</span>
         </div>
       </motion.div>
-    </SectionWrapper>
+    </section>
   );
 }
