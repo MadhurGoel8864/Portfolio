@@ -40,7 +40,12 @@ export function BootSequence() {
 
     const lastDelay = LINES[LINES.length - 1].delay + 380;
     const fadeTimer = setTimeout(() => {
-      if (bootRef.current) bootRef.current.classList.add('fade-out');
+      if (bootRef.current) {
+        // FIX #8: Disable pointer-events as soon as fade begins so the page becomes
+        // scrollable/clickable during the fade-out rather than only after unmount
+        bootRef.current.style.pointerEvents = 'none';
+        bootRef.current.classList.add('fade-out');
+      }
       setTimeout(() => {
         setVisible(false);
         sessionStorage.setItem('bootShown', 'true');

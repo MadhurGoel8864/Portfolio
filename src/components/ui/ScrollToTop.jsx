@@ -7,7 +7,11 @@ export function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const cb = () => setVisible(window.scrollY > 500);
+    // FIX #4: Hide button when within ~200px of the bottom so it never overlaps footer text
+    const cb = () => {
+      const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 200;
+      setVisible(window.scrollY > 500 && !nearBottom);
+    };
     window.addEventListener('scroll', cb, { passive: true });
     return () => window.removeEventListener('scroll', cb);
   }, []);
@@ -32,7 +36,7 @@ export function ScrollToTop() {
                 background: 'linear-gradient(135deg, var(--gold), var(--gold-muted))',
                 border: '1px solid rgba(200,169,81,0.3)',
                 boxShadow: '0 4px 20px rgba(200,169,81,0.2)',
-                color: '#0e0d0b',
+                color: '#0e0d0b', cursor: 'pointer',
               }}
               aria-label="Back to top"
             >
