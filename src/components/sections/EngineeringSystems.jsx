@@ -8,7 +8,7 @@ function SectionDivider({ label }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '60px 0 40px' }}>
       <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--muted)', padding: '6px 14px', border: '1px solid var(--border)', borderRadius: 99, whiteSpace: 'nowrap' }}>{label}</span>
+      <span style={{ fontFamily: 'var(--mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--gold)', padding: '6px 14px', border: '1px solid var(--border-md)', borderRadius: 99, whiteSpace: 'nowrap' }}>{label}</span>
       <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
     </div>
   );

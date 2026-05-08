@@ -171,7 +171,8 @@ function OrbitSystem() {
     };
   }, []);
 
-  const orbitSize = 'clamp(280px, 28vw, 420px)';
+  const orbitSize = 'clamp(300px, 30vw, 460px)';
+  const photoSize = 'clamp(155px, 14.5vw, 230px)';
 
   return (
     <div ref={containerRef} style={{
@@ -200,7 +201,7 @@ function OrbitSystem() {
       <div ref={photoRef} style={{
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 'clamp(120px, 12vw, 175px)', height: 'clamp(120px, 12vw, 175px)',
+        width: photoSize, height: photoSize,
         borderRadius: '50%', zIndex: 5, transition: 'transform 0.1s ease-out',
       }}>
         <div style={{
@@ -260,7 +261,7 @@ function OrbitSystem() {
         fontFamily: 'var(--mono)', fontSize: 10, zIndex: 15,
         animation: prefersReducedMotion ? 'none' : 'floatA 4s ease-in-out infinite', // FIX #21
       }}>
-        <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>// system.status</div>
+        <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>System Status</div>
         {[
           { k: 'role', v: 'backend_eng', vc: '#C8A951' },
           { k: 'status', v: '● available', vc: '#3ddc84' },
@@ -283,7 +284,7 @@ function OrbitSystem() {
         fontFamily: 'var(--mono)', fontSize: 10, zIndex: 15,
         animation: prefersReducedMotion ? 'none' : 'floatB 5s ease-in-out infinite', // FIX #21
       }}>
-        <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>// last_deploy</div>
+        <div style={{ color: 'var(--muted)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Last Deploy</div>
         {[
           { k: 'project', v: 'DevDual', vc: '#C8A951' },
           { k: 'branch', v: 'main ✓', vc: '#818cf8' },

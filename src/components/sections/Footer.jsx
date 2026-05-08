@@ -82,7 +82,7 @@ export function Footer() {
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)' }} className="footer-bottom-responsive">
           <span>© {new Date().getFullYear()} {PERSONAL.name}. All rights reserved.</span>
-          <span>terminal aesthetic · Built with React</span>
+          {/* <span>terminal aesthetic · Built with React</span> */}
         </div>
       </div>
     </footer>

@@ -45,10 +45,10 @@ export function CustomCursor() {
     const onUp = () => document.body.classList.remove('cursor-click');
 
     const animate = () => {
-      rx += (mx - rx) * 0.15;
-      ry += (my - ry) * 0.15;
-      tx += (mx - tx) * 0.08;
-      ty += (my - ty) * 0.08;
+      rx += (mx - rx) * 0.45;
+      ry += (my - ry) * 0.45;
+      tx += (mx - tx) * 0.3;
+      ty += (my - ty) * 0.3;
 
       ring.style.left = rx + 'px';
       ring.style.top = ry + 'px';
