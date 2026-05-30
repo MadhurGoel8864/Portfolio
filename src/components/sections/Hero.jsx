@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-scroll';
 import { PERSONAL, SOCIAL, STATS } from '../../constants/global';
 
 const ROLES = ['Backend Engineer', 'System Architect', 'API Designer', 'Real-time Specialist'];
@@ -399,8 +398,7 @@ export function Hero() {
 
         {/* CTA buttons */}
         <motion.div variants={child} style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
-          {/* FIX #12: explicit download filename */}
-          <a className="btn-primary" href={SOCIAL.resumeLink} download="Madhur_Goel_Resume.pdf">
+          <a className="btn-primary" href={SOCIAL.resumeLink} target="_blank" rel="noopener noreferrer">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 18 15 15"/></svg>
             View Resume
           </a>

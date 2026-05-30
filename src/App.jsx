@@ -23,8 +23,8 @@ export default function App() {
         <Hero />
         <About />
         <SystemOverview />
-        <WhatIBuild />
         <Architecture />
+        <WhatIBuild />
         <EngineeringSystems />
         <Achievements />
       </main>

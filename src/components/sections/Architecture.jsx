@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Globe, Radio, Settings, Database, Cpu, Play } from 'lucide-react';
+import { Globe, Radio, Settings, Database, Cpu, Play, Maximize2 } from 'lucide-react';
 import { SectionTitle } from '../ui/SectionTitle';
-import { ARCHITECTURE } from '../../constants/global';
+import { ARCHITECTURE, DIAGRAMS } from '../../constants/global';
 
 const LAYER_ICONS = [Globe, Radio, Settings, Database, Cpu, Play];
 
@@ -59,6 +59,31 @@ export function Architecture() {
           <span style={{ padding: '5px 12px', borderRadius: 6, background: 'rgba(248,113,113,0.08)', color: 'var(--red)', border: '1px solid rgba(248,113,113,0.22)', whiteSpace: 'nowrap' }}>Judge0</span>
         </div>
       </motion.div>
+
+      {/* Diagrams: System Design + DB Schema, side by side. Click → full diagram on Drive. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, marginTop: 16 }} className="arch-grid-responsive">
+        {DIAGRAMS.map((d, i) => (
+          <motion.a key={d.title} href={d.full} target="_blank" rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+            className="card diagram-card"
+            style={{ display: 'block', padding: 16, textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <div>
+                <div style={{ fontFamily: 'var(--syne)', fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{d.title}</div>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gold)' }}>{d.label}</span>
+              </div>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--gold)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                <Maximize2 size={11} /> Full diagram ↗
+              </span>
+            </div>
+            <div style={{ position: 'relative', borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg2)', aspectRatio: '16 / 10' }}>
+              <img src={d.thumb} alt={`${d.title} diagram`} loading="lazy"
+                style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+            </div>
+          </motion.a>
+        ))}
+      </div>
     </section>
   );
 }

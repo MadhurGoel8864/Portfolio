@@ -29,8 +29,27 @@ export const SOCIAL = {
   leetcode: "https://leetcode.com/madhurgoel88/",
   liveProject: "https://devduel.site",
   apiDocs: "https://devduel.site/api/docs",
-  resumeLink: "/resume.pdf",
+  resumeLink: "https://drive.google.com/file/d/1lOt06F7al41KXraWD1gUkd8wFc1fN3KH/view",
 };
+
+// ── Architecture Diagrams ────────────────────────────────────
+// thumb: local image in /public (reliable) · full: opens the Drive file in a new tab.
+const driveView = (id) => `https://drive.google.com/file/d/${id}/view`;
+
+export const DIAGRAMS = [
+  {
+    label: "System Design",
+    title: "System Architecture",
+    thumb: "/system-architecture.png",
+    full: driveView("16Dk0UEQLRUdCtMAsk00i7-pPpfcH9Xvq"),
+  },
+  {
+    label: "Data Model",
+    title: "Database Schema",
+    thumb: "/db-schema.png",
+    full: driveView("1_bejatDFXLRYkkhb8gP_6gKvJNTujPT9"),
+  },
+];
 
 // ── Hero Stats ───────────────────────────────────────────────
 export const STATS = [
@@ -620,8 +639,8 @@ export const NAV_LINKS = [
   { label: "Home", href: "hero" },
   { label: "About", href: "about" },
   { label: "DevDual", href: "system-overview" },
-  { label: "Capabilities", href: "what-i-build" },
   { label: "Architecture", href: "architecture" },
+  { label: "Capabilities", href: "what-i-build" },
   { label: "Engineering", href: "engineering-systems" },
   { label: "Achievements", href: "achievements" },
 ];

@@ -261,6 +261,10 @@ html, body {
     box-shadow: 0 0 30px rgba(129,140,248,0.12), 0 8px 24px rgba(0,0,0,0.3);
   }
 
+  .diagram-card img { transition: transform 0.3s ease; }
+  .diagram-card:hover img { transform: scale(1.03); }
+  .diagram-card:hover { border-color: var(--gold); }
+
   .sec-eyebrow {
     display: inline-flex; align-items: center; gap: 12px;
     font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
